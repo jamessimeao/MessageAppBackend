@@ -17,7 +17,7 @@ namespace JWTAuth.Services
 
         // The access token will expire after some time. This method gives a new access token if the refresh token didn't expire yet.
         // If the refresh token is invalid, the user will have to login again.
-        public async Task<TokenDto?> RefreshTokenAsync(TokenDto oldTokenDto)
+        public async Task<TokenDto?> RefreshTokenAsync(int userId, string refreshToken)
         {
             throw new NotImplementedException();
         }
