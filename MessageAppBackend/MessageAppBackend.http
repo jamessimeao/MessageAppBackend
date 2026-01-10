@@ -1,0 +1,6 @@
+@MessageAppBackend_HostAddress = http://localhost:5087
+
+GET {{MessageAppBackend_HostAddress}}/
+Accept: application/json
+
+###
