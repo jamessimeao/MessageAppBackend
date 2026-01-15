@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
 ﻿using JWTAuth.Roles;
+using System.ComponentModel.DataAnnotations;
 
 namespace JWTAuth.Models
 {
@@ -10,8 +10,6 @@ namespace JWTAuth.Models
         public string Email { get; set; } = String.Empty;
         public string PasswordHash { get; set; } = String.Empty;
         public string Username { get; set; } = String.Empty;
-        public string? RefreshToken { get; set; }
-        public DateTime? RefreshTokenExpirationTime { get; set; }
         public UserRoles UserRole { get; set; } = UserRoles.Regular;
     }
 }
