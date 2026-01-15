@@ -12,9 +12,9 @@ namespace JWTAuth.Controllers
     {
         // Create a user in the database
         [HttpPost]
-        public async Task<ActionResult> RegisterAsync(UserDto userDto)
+        public async Task<ActionResult> RegisterAsync(UserRegisterDto userRegisterDto)
         {
-            User? user = await authService.RegisterAsync(userDto);
+            User? user = await authService.RegisterAsync(userRegisterDto);
             if(user == null)
             {
                 return BadRequest("User already exists.");
@@ -25,9 +25,9 @@ namespace JWTAuth.Controllers
 
         // Login with credentials. It returns a JWT that should be used by the client to identity itself.
         [HttpPost]
-        public async Task<ActionResult<TokenDto?>> LoginAsync(UserDto userDto)
+        public async Task<ActionResult<TokenDto?>> LoginAsync(UserLoginDto userLoginDto)
         {
-            TokenDto? token = await authService.LoginAsync(userDto);
+            TokenDto? token = await authService.LoginAsync(userLoginDto);
             if(token == null)
             {
                 return BadRequest();

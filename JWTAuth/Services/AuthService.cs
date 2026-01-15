@@ -5,12 +5,12 @@ namespace JWTAuth.Services
 {
     public class AuthService : IAuthService
     {
-        public async Task<User?> RegisterAsync(UserDto userDto)
+        public async Task<User?> RegisterAsync(UserRegisterDto userRegisterDto)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<TokenDto?> LoginAsync(UserDto userDto)
+        public async Task<TokenDto?> LoginAsync(UserLoginDto userLoginDto)
         {
             throw new NotImplementedException();
         }
