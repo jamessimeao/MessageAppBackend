@@ -82,15 +82,11 @@ namespace JWTAuth.Data
 
         public async Task SaveRefreshToken(int userId, RefreshTokenData refreshTokenData)
         {
-            Console.WriteLine("DataAccess.SaveRefreshToken");
-            Console.WriteLine("Delete this print and set datetime in sqlserver!!!!!!!!!!!!!");
-            Console.WriteLine($"expiration time = {refreshTokenData.RefreshTokenExpirationTime}");
 
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("id", userId);
             parameters.Add("refreshtoken", refreshTokenData.RefreshToken);
-            parameters.Add("refreshtokenexpirationtime", "2026-05-23T14:25:10");
-            //parameters.Add("refreshtokenexpirationtime", refreshTokenExpirationTime.ToString());
+            parameters.Add("refreshtokenexpirationtime", refreshTokenData.RefreshTokenExpirationTime);
 
             await dbConnection.ExecuteAsync
             (
