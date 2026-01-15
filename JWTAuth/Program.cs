@@ -28,6 +28,7 @@ builder.Services.AddTransient<IDbConnection>
 // Dependency injection for DataAccess class
 builder.Services.AddTransient<IDataAccess, DataAccess>();
 
+// Dependency injection for authorization service
 builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
