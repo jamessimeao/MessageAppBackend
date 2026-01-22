@@ -119,5 +119,39 @@ namespace JWTAuthTests.UnitTests
             //********************* Assert *************************
             Assert.NotNull(token);
         }
+
+        [Fact]
+        public async Task LoginAsync_ReturnsNull_IfUserNotInDatabase()
+        {
+            //********************* Arrange *************************
+            UserLoginDto userLoginDto = new()
+            {
+                Email = "name@company.com",
+                Password = "password",
+            };
+
+            PasswordHasher<User> passwordHasher = new();
+            string passwordHash = passwordHasher.HashPassword(new User(), userLoginDto.Password);
+
+            User user = new User()
+            {
+                Email = userLoginDto.Email,
+                PasswordHash = passwordHash,
+            };
+
+            // Mock the IDataAccess
+            Mock<IDataAccess> dataAccessMock = new();
+            dataAccessMock.Setup(dataAccess => dataAccess.GetUserFromEmailAsync(userLoginDto.Email))
+                .Returns(Task.FromResult<User?>(null));
+
+            // Create the AuthService
+            AuthService authService = new AuthService(_configuration, dataAccessMock.Object);
+
+            //********************* Act *************************
+            TokenDto? token = await authService.LoginAsync(userLoginDto);
+
+            //********************* Assert *************************
+            Assert.Null(token);
+        }
     }
 }
