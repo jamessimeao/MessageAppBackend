@@ -31,7 +31,7 @@ namespace JWTAuthTests.UnitTests
 
             // A mock for the IAuthService, that returns a non null user for the newly registered user
             Mock<IAuthService> authServiceMock = new Mock<IAuthService>();
-            authServiceMock.Setup(x => x.RegisterAsync(userRegisterDto)).Returns(Task.FromResult(user));
+            authServiceMock.Setup(x => x.RegisterAsync(userRegisterDto)).Returns(Task.FromResult<User?>(user));
 
             // Create the authController
             AuthController authController = new AuthController(authServiceMock.Object);
