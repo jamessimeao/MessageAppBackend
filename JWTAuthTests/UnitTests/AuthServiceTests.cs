@@ -87,7 +87,7 @@ namespace JWTAuthTests.UnitTests
         }
 
         [Fact]
-        public async Task LoginAsync_ReturnsToken_IfUserExists()
+        public async Task LoginAsync_ReturnsTokenDto_IfUserExists()
         {
             //********************* Arrange *************************
             UserLoginDto userLoginDto = new()
