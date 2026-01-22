@@ -46,5 +46,36 @@ namespace JWTAuthTests.UnitTests
             Assert.NotNull(statusCode);
             Assert.Equal(201, statusCode); // 201 = created
         }
+
+        [Fact]
+        public async Task RegisterAsync_ReturnsBadRequest_ForUserThatAlreadyExists()
+        {
+            //************************* Arrange *********************
+            // The user to be registered.
+            UserRegisterDto userRegisterDto = new UserRegisterDto()
+            {
+                Email = "name@company.com",
+                Password = "password",
+                Username = "name",
+            };
+
+            // A mock for the IAuthService. The user should be already registered,
+            // so the IAuthService must return null.
+            Mock<IAuthService> authServiceMock = new Mock<IAuthService>();
+            authServiceMock.Setup(x => x.RegisterAsync(userRegisterDto)).Returns(Task.FromResult<User?>(null));
+
+            // Create the authController
+            AuthController authController = new AuthController(authServiceMock.Object);
+
+            //************************* Act *********************
+            ActionResult result = await authController.RegisterAsync(userRegisterDto);
+            IStatusCodeActionResult statusCodeActionResult = (IStatusCodeActionResult)result;
+            int? statusCode = statusCodeActionResult.StatusCode;
+
+            //************************* Assert *********************
+            Assert.NotNull(result);
+            Assert.NotNull(statusCode);
+            Assert.Equal(400, statusCode); // 400 = bad request
+        }
     }
 }
