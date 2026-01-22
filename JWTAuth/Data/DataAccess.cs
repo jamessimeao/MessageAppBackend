@@ -14,7 +14,7 @@ namespace JWTAuth.Data
         private const string SAVE_REFRESH_TOKEN_PROCEDURE = "dbo.saveRefreshToken";
         private const string GET_REFRESH_TOKEN_DATA_PROCEDURE = "dbo.getRefreshTokenData";
 
-        public async Task RegisterUser(User user)
+        public async Task RegisterUserAsync(User user)
         {
             //Set up DynamicParameters object to pass parameters
             DynamicParameters parameters = new DynamicParameters();
@@ -32,7 +32,7 @@ namespace JWTAuth.Data
             );
         }
 
-        public async Task<bool> UserExists(UserRegisterDto userDto)
+        public async Task<bool> UserExistsAsync(UserRegisterDto userDto)
         {
             //Set up DynamicParameters object to pass parameters
             DynamicParameters parameters = new DynamicParameters();
@@ -49,7 +49,7 @@ namespace JWTAuth.Data
             return userExists;
         }
 
-        public async Task<User?> GetUserFromId(int userId)
+        public async Task<User?> GetUserFromIdAsync(int userId)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("id", userId);
@@ -63,7 +63,7 @@ namespace JWTAuth.Data
             return user;
         }
 
-        public async Task<User?> GetUserFromEmail(string userEmail)
+        public async Task<User?> GetUserFromEmailAsync(string userEmail)
         {
             //Set up DynamicParameters object to pass parameters
             DynamicParameters parameters = new DynamicParameters();
@@ -80,7 +80,7 @@ namespace JWTAuth.Data
             return user;
         }
 
-        public async Task SaveRefreshToken(int userId, RefreshTokenData refreshTokenData)
+        public async Task SaveRefreshTokenAsync(int userId, RefreshTokenData refreshTokenData)
         {
 
             DynamicParameters parameters = new DynamicParameters();
@@ -96,7 +96,7 @@ namespace JWTAuth.Data
             );
         }
 
-        public async Task<RefreshTokenData?> GetRefreshTokenData(int userId)
+        public async Task<RefreshTokenData?> GetRefreshTokenDataAsync(int userId)
         {
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("userId", userId);

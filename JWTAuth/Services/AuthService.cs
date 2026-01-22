@@ -41,7 +41,7 @@ namespace JWTAuth.Services
         public async Task<User?> RegisterAsync(UserRegisterDto userRegisterDto)
         {
             // First check if the user already exists in the database
-            bool userExists = await _dataAccess.UserExists(userRegisterDto);
+            bool userExists = await _dataAccess.UserExistsAsync(userRegisterDto);
             if (userExists)
             {
                 return null;
@@ -57,7 +57,7 @@ namespace JWTAuth.Services
             user.Username = userRegisterDto.Username;
 
             // Add the new user to the database
-            await _dataAccess.RegisterUser(user);
+            await _dataAccess.RegisterUserAsync(user);
 
             return user;
         }
@@ -66,7 +66,7 @@ namespace JWTAuth.Services
         {
             // First get the user in the database with given email.
             // If there is no user with such email, we get a null.
-            User? user = await _dataAccess.GetUserFromEmail(userLoginDto.Email);
+            User? user = await _dataAccess.GetUserFromEmailAsync(userLoginDto.Email);
             if(user == null)
             {
                 return null;
@@ -139,7 +139,7 @@ namespace JWTAuth.Services
             };
 
             // Save to database
-            await _dataAccess.SaveRefreshToken(userId, refreshTokenData);
+            await _dataAccess.SaveRefreshTokenAsync(userId, refreshTokenData);
 
             // Return the refresh token
             return refreshToken;
@@ -163,7 +163,7 @@ namespace JWTAuth.Services
 
         private async Task<bool> RefreshTokenIsValid(int userId, string refreshToken)
         {
-            RefreshTokenData? refreshTokenData = await _dataAccess.GetRefreshTokenData(userId);
+            RefreshTokenData? refreshTokenData = await _dataAccess.GetRefreshTokenDataAsync(userId);
             if(refreshTokenData != null)
             {
                 bool sameRefreshToken = refreshToken == refreshTokenData.RefreshToken;
@@ -191,7 +191,7 @@ namespace JWTAuth.Services
             }
 
             // Get user from its id
-            User? user = await _dataAccess.GetUserFromId(userId);
+            User? user = await _dataAccess.GetUserFromIdAsync(userId);
             if(user == null)
             {
                 return null;

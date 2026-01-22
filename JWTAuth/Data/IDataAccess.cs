@@ -5,11 +5,11 @@ namespace JWTAuth.Data
 {
     public interface IDataAccess
     {
-        public Task RegisterUser(User user);
-        public Task<bool> UserExists(UserRegisterDto userDto);
-        public Task<User?> GetUserFromId(int userId);
-        public Task<User?> GetUserFromEmail(string userEmail);
-        public Task SaveRefreshToken(int userId, RefreshTokenData refreshTokenData);
-        public Task<RefreshTokenData?> GetRefreshTokenData(int userId);
+        public Task RegisterUserAsync(User user);
+        public Task<bool> UserExistsAsync(UserRegisterDto userDto);
+        public Task<User?> GetUserFromIdAsync(int userId);
+        public Task<User?> GetUserFromEmailAsync(string userEmail);
+        public Task SaveRefreshTokenAsync(int userId, RefreshTokenData refreshTokenData);
+        public Task<RefreshTokenData?> GetRefreshTokenDataAsync(int userId);
     }
 }
