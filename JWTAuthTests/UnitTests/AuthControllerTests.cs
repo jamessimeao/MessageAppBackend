@@ -78,5 +78,55 @@ namespace JWTAuthTests.UnitTests
             Assert.NotNull(statusCode);
             Assert.Equal(400, statusCode); // 400 = bad request
         }
+
+        [Fact]
+        public async Task LoginAsync_ReturnsOk_ForRegisteredUser()
+        {
+            //************************* Arrange *********************
+            // The user to login.
+            UserLoginDto userLoginDto = new UserLoginDto()
+            {
+                Email = "name@company.com",
+                Password = "password",
+            };
+
+            // Token to be returned from IAuthService.LoginAsync
+            TokenDto token = new TokenDto()
+            {
+                AccessToken = "accessToken",
+                RefreshToken = "refreshToken",
+            };
+
+            // A mock for the IAuthService.
+            // The user should be registered,
+            // so the IAuthService must return a non null token.
+            Mock<IAuthService> authServiceMock = new Mock<IAuthService>();
+            authServiceMock.Setup(authService => authService.LoginAsync(userLoginDto)).Returns(Task.FromResult<TokenDto?>(token));
+
+            // Create the authController
+            AuthController authController = new AuthController(authServiceMock.Object);
+
+            //************************* Act *********************
+            ActionResult<TokenDto?> result = await authController.LoginAsync(userLoginDto);
+
+            IStatusCodeActionResult? statusCodeActionResult = (IStatusCodeActionResult?) result.Result;
+            int? statusCode = statusCodeActionResult?.StatusCode;
+
+            // The value isn't stored in result.Value, rather in result.Result.
+            // To extract it, we need to do some casts.
+            TokenDto? tokenResponse = null;
+            if(result.Result != null)
+            {
+                tokenResponse = (TokenDto?)((ObjectResult)result.Result).Value;
+            }
+
+            //************************* Assert *********************
+            Assert.NotNull(result);
+            Assert.NotNull(result.Result);
+            Assert.NotNull(statusCode);
+            Assert.NotNull(tokenResponse);
+            Assert.Equal(200, statusCode); // 200 = ok
+        }
+
     }
 }
