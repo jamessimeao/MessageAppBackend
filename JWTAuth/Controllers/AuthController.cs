@@ -78,7 +78,7 @@ namespace JWTAuth.Controllers
             TokenDto? token = await authService.RefreshAccessTokenAsync(userId, refreshToken);
             if(token == null)
             {
-                return Unauthorized();
+                return Forbid();
             }
             return Ok(token);
         }
