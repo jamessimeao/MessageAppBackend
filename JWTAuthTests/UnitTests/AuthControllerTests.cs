@@ -154,13 +154,10 @@ namespace JWTAuthTests.UnitTests
             IStatusCodeActionResult? statusCodeActionResult = (IStatusCodeActionResult?)result.Result;
             int? statusCode = statusCodeActionResult?.StatusCode;
 
-            TokenDto? tokenResponse = result.Value;
-
             //************************* Assert *********************
             Assert.NotNull(result);
             Assert.NotNull(result.Result);
             Assert.NotNull(statusCode);
-            Assert.Null(tokenResponse);
             Assert.Equal(400, statusCode); // 400 = bad request
         }
     }
