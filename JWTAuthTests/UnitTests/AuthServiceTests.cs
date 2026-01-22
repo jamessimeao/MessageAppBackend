@@ -85,5 +85,39 @@ namespace JWTAuthTests.UnitTests
             //********************* Assert *************************
             Assert.Null(user);
         }
+
+        [Fact]
+        public async Task LoginAsync_ReturnsToken_IfUserExists()
+        {
+            //********************* Arrange *************************
+            UserLoginDto userLoginDto = new()
+            {
+                Email = "name@company.com",
+                Password = "password",
+            };
+
+            PasswordHasher<User> passwordHasher = new();
+            string passwordHash = passwordHasher.HashPassword(new User(), userLoginDto.Password);
+
+            User user = new User()
+            {
+                Email = userLoginDto.Email,
+                PasswordHash = passwordHash,
+            };
+
+            // Mock the IDataAccess
+            Mock<IDataAccess> dataAccessMock = new();
+            dataAccessMock.Setup(dataAccess => dataAccess.GetUserFromEmailAsync(userLoginDto.Email))
+                .Returns(Task.FromResult<User?>(user));
+
+            // Create the AuthService
+            AuthService authService = new AuthService(_configuration, dataAccessMock.Object);
+
+            //********************* Act *************************
+            TokenDto? token = await authService.LoginAsync(userLoginDto);
+
+            //********************* Assert *************************
+            Assert.NotNull(token);
+        }
     }
 }
