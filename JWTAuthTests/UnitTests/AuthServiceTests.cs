@@ -189,5 +189,26 @@ namespace JWTAuthTests.UnitTests
         }
 
 
+        [Fact]
+        public async Task RefreshAccessTokenAsync_ReturnsNull_IfUserDoesntExist()
+        {
+            //********************* Arrange *************************
+            int userId = 1;
+            string refreshToken = "";
+
+            // Mock the IDataAccess
+            Mock<IDataAccess> dataAccessMock = new();
+            dataAccessMock.Setup(dataAccess => dataAccess.GetUserFromIdAsync(userId))
+                .Returns(Task.FromResult<User?>(null));
+
+            // Create the AuthService
+            AuthService authService = new AuthService(_configuration, dataAccessMock.Object);
+
+            //********************* Act *************************
+            TokenDto? token = await authService.RefreshAccessTokenAsync(userId, refreshToken);
+
+            //********************* Assert *************************
+            Assert.Null(token);
+        }
     }
 }
