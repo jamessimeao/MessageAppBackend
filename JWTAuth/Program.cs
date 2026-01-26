@@ -56,7 +56,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = appSettingsAudience,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appSettingsToken)),
-            ValidateLifetime = false
+            ValidateLifetime = false // don't validate lifetime, because the authentication is to ask for a new access token
         }
     );
 
