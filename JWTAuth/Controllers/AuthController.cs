@@ -3,7 +3,6 @@ using JWTAuth.Models;
 using JWTAuth.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using System.Security.Claims;
 
 namespace JWTAuth.Controllers
@@ -12,6 +11,13 @@ namespace JWTAuth.Controllers
     [Route("[controller]/[action]")]
     public class AuthController(IAuthService authService) : ControllerBase
     {
+        [HttpGet]
+        public ActionResult<string> TestConnection()
+        {
+            Console.WriteLine("action TestConnection");
+            return Ok("Reached Auth endpoint");
+        }
+
         // Create a user in the database
         [HttpPost]
         public async Task<ActionResult> RegisterAsync(UserRegisterDto userRegisterDto)
