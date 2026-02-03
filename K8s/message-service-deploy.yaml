@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-service-deployment
+  labels:
+    app: message-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: message-service
+  template:
+    metadata:
+      labels:
+        app: message-service
+    spec:
+      containers:
+      - name: message-service
+        image: jmstoledo/message-service:v51
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: secrets
+          mountPath: /app/secrets
+          readOnly: true
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+      volumes:
+      - name: secrets
+        secret:
+          secretName: jwt-settings
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: message-service-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: message-service
+  ports:
+  - name: message-service
+    protocol: TCP
+    port: 80
+    targetPort: 8080
