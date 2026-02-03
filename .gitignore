@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 K8s/secrets/*
+K8s/unused/*
