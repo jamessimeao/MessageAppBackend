@@ -25,6 +25,53 @@ namespace Message.Hubs
             _kafkaProducer = kafkaProducer;
         }
 
+        public async Task AddToGroups()
+        {
+            // Get from the database which groups the user is in.
+            string? userId = Context.UserIdentifier;
+            if(userId == null)
+            {
+                Console.WriteLine("Error: Context.UserIdentifier = null in SendMessageAsync");
+                await Clients.Caller.ReceiveErrorMessageAsync("Error in setup.");
+                return;
+            }
+
+            // Since the Hub is transient, I can't store the rooms in the class,
+            // but I can subscribe the user to its groups.
+            IEnumerable<string> roomIds = await _dataAccess.GetRoomIds(userId);
+
+            // Add to corresponding groups in SignalR.
+            List<Task> tasks = new List<Task>();
+            foreach (string roomId in roomIds)
+            {
+                tasks.Add(Groups.AddToGroupAsync(Context.ConnectionId, roomId));
+            }
+            await Task.WhenAll(tasks);
+        }
+
+        public async Task RemoveFromGroups()
+        {
+            // Get from the database which groups the user is in.
+            string? userId = Context.UserIdentifier;
+            if (userId == null)
+            {
+                Console.WriteLine("Error: Context.UserIdentifier = null in SendMessageAsync");
+                await Clients.Caller.ReceiveErrorMessageAsync("Error in setup.");
+                return;
+            }
+
+            // Since the Hub is transient, I can't store the rooms in the class.
+            IEnumerable<string> roomIds = await _dataAccess.GetRoomIds(userId);
+
+            // Remove from corresponding groups in SignalR.
+            List<Task> tasks = new List<Task>();
+            foreach (string roomId in roomIds)
+            {
+                tasks.Add(Groups.RemoveFromGroupAsync(Context.ConnectionId, roomId));
+            }
+            await Task.WhenAll(tasks);
+        }
+
         public async Task SendMessageAsync(string roomId, string message)
         {
             string? senderId = Context.UserIdentifier;
