@@ -28,8 +28,7 @@ if(builder.Environment.IsProduction())
 string? connectionString = builder.Configuration.GetConnectionString("Default");
 if(connectionString == null)
 {
-    Console.WriteLine("Failed to get connection string.");
-    return;
+    throw new Exception("Failed to get connection string.");
 }
 
 builder.Services.AddTransient<IDbConnection>
