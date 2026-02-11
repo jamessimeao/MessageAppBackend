@@ -67,12 +67,9 @@ namespace Message.Hubs
 
         public async Task RemoveFromGroupsAsync()
         {
-            // Get from the database which groups the user is in.
-            string? userId = Context.UserIdentifier;
-            if (userId == null)
+            (string userId, bool succeded) = await GetUserId();
+            if (!succeded)
             {
-                Console.WriteLine("Error: Context.UserIdentifier = null in SendMessageAsync");
-                await Clients.Caller.ReceiveErrorMessageAsync("Error in setup.");
                 return;
             }
 
