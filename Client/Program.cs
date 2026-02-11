@@ -57,6 +57,12 @@ namespace Client
                 return;
             }
 
+            bool addedToGroups = await client.AddToGroups();
+            if(!addedToGroups)
+            {
+                return;
+            }
+
             string? message = null;
             bool chatting = true;
             Console.WriteLine("Starting chat. Send q to quit.");
