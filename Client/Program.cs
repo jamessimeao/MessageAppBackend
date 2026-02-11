@@ -65,6 +65,7 @@ namespace Client
 
             string? message = null;
             bool chatting = true;
+            const string roomId = "groupName";
             Console.WriteLine("Starting chat. Send q to quit.");
             while (chatting)
             {
@@ -78,7 +79,7 @@ namespace Client
                     }
                     else
                     {
-                        await client.SendMessage(userRegisterDto.Email, message);
+                        await client.SendMessage(roomId, message);
                     }
                 }
             }
