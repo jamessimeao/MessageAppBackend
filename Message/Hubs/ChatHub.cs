@@ -94,13 +94,15 @@ namespace Message.Hubs
 
         public async Task SendMessageAsync(string roomId, string message)
         {
-            string? senderId = Context.UserIdentifier;
-            if (senderId == null)
+            if (!UserIsInRoom(roomId))
             {
-                Console.WriteLine("Error: Context.UserIdentifier = null in SendMessageAsync");
+                Console.WriteLine("User trying to send message to room it is not in.");
+                return;
+            }
 
-                await Clients.Caller.ReceiveErrorMessageAsync("Failed to deliver message.");
-
+            (string senderId, bool succeded) = await GetUserId();
+            if (!succeded)
+            {
                 return;
             }
 
