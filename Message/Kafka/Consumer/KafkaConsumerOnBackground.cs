@@ -1,4 +1,4 @@
-﻿using Message.Hubs;
+﻿using Message.SignalR.Hubs;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Message.Kafka.Consumer

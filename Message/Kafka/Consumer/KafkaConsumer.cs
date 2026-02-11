@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
-using Message.Hubs;
 using Message.Kafka.Keys;
+using Message.SignalR.Hubs;
 using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 

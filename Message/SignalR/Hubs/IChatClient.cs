@@ -1,4 +1,4 @@
-﻿namespace Message.Hubs
+﻿namespace Message.SignalR.Hubs
 {
     // Interface that abstracts the Hub from the client.
     // It is used by SignalR for strongly typing.
