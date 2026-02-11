@@ -49,9 +49,12 @@ namespace Message.Hubs
                 return;
             }
 
-            // Since the Hub is transient, I can't store the rooms in the class,
-            // but I can subscribe the user to its groups.
+            // Get from the database which groups the user is in.
+            Console.WriteLine("ChatHub adding user to its groups...");
             IEnumerable<string> roomIds = await _dataAccess.GetRoomIds(userId);
+            // Since the Hub is transient, I can't store the rooms in the class,
+            // but I can store it in Context.Items.
+            Context.Items.Add("roomIds", roomIds);
 
             // Add to corresponding groups in SignalR.
             List<Task> tasks = new List<Task>();
