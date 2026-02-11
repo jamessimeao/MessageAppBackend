@@ -57,19 +57,7 @@ namespace Message.Kafka.Consumer
                     
                     try
                     {
-                        Console.WriteLine("KafkaConsumer sending message back to client...");
-
-                        string serializedKey = consumeResult.Message.Key;
-                        Key? key = JsonSerializer.Deserialize<Key>(serializedKey);
-                        if(key == null)
-                        {
-                            throw new Exception("Error: Null key.");
-                        }
-                        IChatClient receiver = _hubContext.Clients.User(key.ReceiverId);
-                        string message = consumeResult.Message.Value;
-                        await receiver.ReceiveMessageAsync(key.SenderId, message);
-
-                        Console.WriteLine("KafkaConsumer sent back to client.");
+                        await SendMessageBackToSignalRClient(consumeResult);
                     }
                     catch (Exception ex)
                     {
@@ -85,6 +73,23 @@ namespace Message.Kafka.Consumer
             {
                 consumer.Close();
             }
+        }
+
+        private async Task SendMessageBackToSignalRClient(ConsumeResult<string, string> consumeResult)
+        {
+            Console.WriteLine("KafkaConsumer sending message back to client...");
+
+            string serializedKey = consumeResult.Message.Key;
+            Key? key = JsonSerializer.Deserialize<Key>(serializedKey);
+            if (key == null)
+            {
+                throw new Exception("Error: Null key.");
+            }
+            string message = consumeResult.Message.Value;
+            string groupName = key.ReceiverId;
+            await _hubContext.Clients.Group(groupName).ReceiveMessageAsync(key.SenderId, message);
+
+            Console.WriteLine("KafkaConsumer sent back to client.");
         }
 
         ValueTask IAsyncDisposable.DisposeAsync()
