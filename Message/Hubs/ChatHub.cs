@@ -25,13 +25,16 @@ namespace Message.Hubs
             _kafkaProducer = kafkaProducer;
         }
 
+        private async Task<Tuple<string, bool>> GetUserId()
         {
-            // Get from the database which groups the user is in.
             string? userId = Context.UserIdentifier;
-            if(userId == null)
+            if (userId == null)
             {
                 Console.WriteLine("Error: Context.UserIdentifier = null in SendMessageAsync");
-                await Clients.Caller.ReceiveErrorMessageAsync("Error in setup.");
+                return new Tuple<string, bool>("",false);
+            }
+            return new Tuple<string, bool>(userId, true);
+        }
         private async Task AddToGroupsAsync()
         {
             (string userId, bool succeded) = await GetUserId();
