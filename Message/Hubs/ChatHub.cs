@@ -35,6 +35,12 @@ namespace Message.Hubs
             }
             return new Tuple<string, bool>(userId, true);
         }
+
+        public override async Task OnConnectedAsync()
+        {
+            await base.OnConnectedAsync();
+            await AddToGroupsAsync();
+        }
         private async Task AddToGroupsAsync()
         {
             (string userId, bool succeded) = await GetUserId();
