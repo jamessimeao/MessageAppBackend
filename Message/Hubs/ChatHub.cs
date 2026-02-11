@@ -65,7 +65,7 @@ namespace Message.Hubs
             await Task.WhenAll(tasks);
         }
 
-        public async Task RemoveFromGroups()
+        public async Task RemoveFromGroupsAsync()
         {
             // Get from the database which groups the user is in.
             string? userId = Context.UserIdentifier;
