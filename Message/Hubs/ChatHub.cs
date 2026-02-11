@@ -22,7 +22,7 @@ namespace Message.Hubs
             _kafkaProducer = kafkaProducer;
         }
 
-        public async Task SendMessageAsync(string receiverId, string message)
+        public async Task SendMessageAsync(string roomId, string message)
         {
             string? senderId = Context.UserIdentifier;
             if (senderId == null)
@@ -35,7 +35,12 @@ namespace Message.Hubs
             }
 
             Console.WriteLine("ChatHub sending message to Kafka...");
-            await _kafkaProducer.ProduceToKafkaAsync(senderId, receiverId, message);
+            Task kafkaTask = _kafkaProducer.ProduceToKafkaAsync(senderId, roomId, message);
+            Console.WriteLine("ChatHub sending message to group...");
+            Task messageTask = Clients.Group(roomId).ReceiveMessageAsync(senderId, message);
+
+            await kafkaTask;
+            await messageTask;
         }
     }
 }
