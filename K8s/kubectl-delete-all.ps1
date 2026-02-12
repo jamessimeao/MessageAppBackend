@@ -1,3 +1,5 @@
+kubectl delete -f kafka-consumer-deploy.yaml -n messageapp
+
 kubectl delete -f mssql.yaml -n messageapp
 
 kubectl delete -f auth-service-deploy.yaml -n messageapp

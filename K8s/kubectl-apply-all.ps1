@@ -12,6 +12,7 @@ kubectl apply -f kafka/kafka-single-node.yaml -n kafka # I'll use a single node,
 # Create a Kafka topic. After this, we can start sending messages to this topic.
 kubectl apply -f kafka/kafka-topic.yaml -n kafka
 
+kubectl apply -f kafka-consumer-deploy.yaml -n messageapp
 
 kubectl apply -f message-service-deploy.yaml -n messageapp # requires auth (only authorized users can access) and kafka
 kubectl apply -f gateway.yaml -n messageapp # gateway for client to access auth and message services
