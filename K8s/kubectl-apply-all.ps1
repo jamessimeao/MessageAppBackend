@@ -15,4 +15,5 @@ kubectl apply -f kafka/kafka-topic.yaml -n kafka
 kubectl apply -f kafka-consumer-deploy.yaml -n messageapp
 
 kubectl apply -f message-service-deploy.yaml -n messageapp # requires auth (only authorized users can access) and kafka
+kubectl apply -f rooms-service-deploy.yaml -n messageapp
 kubectl apply -f gateway.yaml -n messageapp # gateway for client to access auth and message services

@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rooms-service-deployment
+  labels:
+    app: rooms-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rooms-service
+  template:
+    metadata:
+      labels:
+        app: rooms-service
+    spec:
+      containers:
+      - name: rooms-service
+        image: jmstoledo/rooms-service:v1
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: secrets
+          mountPath: /app/secrets
+          readOnly: true
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+      volumes:
+      - name: secrets
+        projected:
+          sources:
+          - secret:
+              name: jwt-settings
+          - secret:
+              name: db-settings
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: rooms-service-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: rooms-service
+  ports:
+  - name: rooms-service
+    protocol: TCP
+    port: 80
+    targetPort: 8080

@@ -4,6 +4,8 @@ kubectl delete -f mssql.yaml -n messageapp
 
 kubectl delete -f auth-service-deploy.yaml -n messageapp
 
+kubectl delete -f rooms-service-deploy.yaml -n messageapp
+
 kubectl delete -f message-service-deploy.yaml -n messageapp
 
 kubectl delete -f gateway.yaml -n messageapp
