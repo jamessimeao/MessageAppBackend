@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using KafkaConsumer.Data;
 using KafkaConsumer.Keys;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
@@ -13,8 +14,12 @@ namespace KafkaConsumer.Kafka
         private const string groupId = "someGroupId";
         private readonly IConsumer<string, string> consumer;
 
-        public Consumer(IConfiguration configuration)
+        private readonly IDataAccess _dataAccess;
+
+        public Consumer(IConfiguration configuration, IDataAccess dataAccess)
         {
+            _dataAccess = dataAccess;
+
             Console.WriteLine("Constructing KafkaConsumer...");
 
             // Get bootstrapServers, for Kafka
