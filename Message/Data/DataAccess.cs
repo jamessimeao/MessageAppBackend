@@ -2,9 +2,9 @@
 {
     public class DataAccess : IDataAccess
     {
-        public async Task<IEnumerable<string>> GetRoomIds(string userId)
+        public async Task<IEnumerable<int>> GetRoomIdsAsync(int userId)
         {
-            IEnumerable<string> roomIds = ["groupName"];
+            IEnumerable<int> roomIds = [0];
             return roomIds;
         }
     }
