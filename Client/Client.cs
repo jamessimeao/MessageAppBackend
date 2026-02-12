@@ -54,9 +54,9 @@ namespace Client
             connection.Closed += OnConnectionClosed;
 
             // When connection receives a message, print it
-            connection.On<string, string>("ReceiveMessageAsync", async (string senderId, string message) =>
+            connection.On<int, string, DateTime>("ReceiveMessageAsync", async (int senderId, string message, DateTime time) =>
             {
-                Console.WriteLine($"{senderId}: {message}");
+                Console.WriteLine($"{time}, {senderId}: {message}");
             });
 
             connection.On<string>("ReceiveErrorMessageAsync", async (string errorMessage) =>
@@ -175,7 +175,7 @@ namespace Client
             return false;
         }
 
-        public async Task SendMessage(string receiverId, string message)
+        public async Task SendMessage(int receiverId, string message)
         {
             if (connection == null)
             {
@@ -186,7 +186,8 @@ namespace Client
             {
                 // Invoke method SendMessage of ChatHub, with arguments user and message
                 Console.WriteLine("Sending message to server...");
-                await connection.InvokeAsync("SendMessageAsync", receiverId, message);
+                DateTime time = DateTime.UtcNow;
+                await connection.InvokeAsync("SendMessageAsync", receiverId, message, time);
                 Console.WriteLine("Message sent.");
             }
             catch (Exception ex)
