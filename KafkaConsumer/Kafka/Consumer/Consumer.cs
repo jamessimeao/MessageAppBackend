@@ -1,7 +1,6 @@
 ﻿using Confluent.Kafka;
 using KafkaConsumer.Data;
 using KafkaConsumer.Keys;
-using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 
 namespace KafkaConsumer.Kafka
@@ -57,11 +56,11 @@ namespace KafkaConsumer.Kafka
                     
                     try
                     {
-                        await SendMessageBackToSignalRClient(consumeResult);
+                        await ProcessConsumedMessage(consumeResult);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine($"\nError sending message back: {ex.Message}\n");
+                        Console.WriteLine($"\nError processing consumed message: {ex.Message}\n");
                     }
                 }
             }
@@ -75,9 +74,9 @@ namespace KafkaConsumer.Kafka
             }
         }
 
-        private async Task SendMessageBackToSignalRClient(ConsumeResult<string, string> consumeResult)
+        private async Task ProcessConsumedMessage(ConsumeResult<string, string> consumeResult)
         {
-            Console.WriteLine("KafkaConsumer sending message back to client...");
+            Console.WriteLine("KafkaConsumer processing consumed message...");
 
             string serializedKey = consumeResult.Message.Key;
             Key? key = JsonSerializer.Deserialize<Key>(serializedKey);
@@ -85,10 +84,15 @@ namespace KafkaConsumer.Kafka
             {
                 throw new Exception("Error: Null key.");
             }
+            int senderId = key.SenderId;
+            int roomId = key.ReceiverId;
+            DateTime time = key.Time;
             string message = consumeResult.Message.Value;
-            string groupName = key.ReceiverId;
 
-            Console.WriteLine("KafkaConsumer sent back to client.");
+            // Store message in database
+            await _dataAccess.SaveMessage(senderId, roomId, message, time);
+
+            Console.WriteLine("KafkaConsumer consumed message successfully.");
         }
 
         ValueTask IAsyncDisposable.DisposeAsync()
