@@ -58,8 +58,7 @@ namespace Message.SignalR.Hubs
             {
                 return;
             }
-
-            IEnumerable<string> roomIds = (IEnumerable<string>) value;
+            IEnumerable<int> roomIds = (IEnumerable<int>)valueRoomId;
 
             // Remove from corresponding groups in SignalR.
             List<Task> tasks = new List<Task>();
