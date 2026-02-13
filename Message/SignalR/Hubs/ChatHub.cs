@@ -17,6 +17,7 @@ namespace Message.SignalR.Hubs
         private readonly IDataAccess _dataAccess;
         private readonly IKafkaProducer _kafkaProducer;
 
+        // Keys to be used with Context.Items dictionary
         private const string userIdKey = "userId";
         private const string roomIdsKey = "roomIds";
 
