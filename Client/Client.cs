@@ -1,6 +1,7 @@
 ﻿using JWTAuth.Dtos;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
@@ -158,9 +159,16 @@ namespace Client
         {
             HttpClient httpClient = new HttpClient();
 
+            if(token == null)
+            {
+                throw new Exception("Null token");
+            }
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+
             string serializedJson = JsonSerializer.Serialize(new { Name = name});
             Console.WriteLine($"json to post {serializedJson}");
             using StringContent jsonContent = new StringContent(serializedJson, Encoding.UTF8, "application/json");
+
             HttpResponseMessage responseMessage = await httpClient.PostAsync(registerUrl, jsonContent);
             if (responseMessage.IsSuccessStatusCode)
             {
