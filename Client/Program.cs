@@ -16,13 +16,13 @@ namespace Client
 
             Client client = new Client(userRegisterDto);
 
-            bool connectionSuccessful = await client.TestConnectionToAuth();
+            bool connectionSuccessful = await client.TestConnectionToAuthAsync();
             if(!connectionSuccessful)
             {
                 return;
             }
 
-            bool Registered = await client.Register(userRegisterDto);
+            bool Registered = await client.RegisterAsync(userRegisterDto);
             if (Registered)
             {
                 Console.WriteLine("Registered new user.");
@@ -43,15 +43,15 @@ namespace Client
                 Email = userRegisterDto.Email,
                 Password = userRegisterDto.Password,
             };
-            bool loggedIn = await client.Login(userLoginDto);
+            bool loggedIn = await client.LoginAsync(userLoginDto);
             if(!loggedIn)
             {
                 return;
             }
 
-            await client.ConfigureConnection();
+            await client.ConfigureConnectionAsync();
 
-            bool connected = await client.TryToConnectToChatHub();
+            bool connected = await client.TryToConnectToChatHubAsync();
             if (!connected)
             {
                 return;
@@ -73,7 +73,7 @@ namespace Client
                     }
                     else
                     {
-                        await client.SendMessage(roomId, message);
+                        await client.SendMessageAsync(roomId, message);
                     }
                 }
             }

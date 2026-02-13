@@ -31,7 +31,7 @@ namespace Client
             jsonSerializerOptions.PropertyNameCaseInsensitive = true;
         }
 
-        public async Task ConfigureConnection()
+        public async Task ConfigureConnectionAsync()
         {
             if (token == null)
             {
@@ -51,7 +51,7 @@ namespace Client
                 .Build();
 
             // When the connection is closed, try to reconnect after some time
-            connection.Closed += OnConnectionClosed;
+            connection.Closed += OnConnectionClosedAsync;
 
             // When connection receives a message, print it
             connection.On<int, string, DateTime>("ReceiveMessageAsync", async (int senderId, string message, DateTime time) =>
@@ -65,7 +65,7 @@ namespace Client
             });
         }
 
-        private async Task OnConnectionClosed(Exception? error)
+        private async Task OnConnectionClosedAsync(Exception? error)
         {
             if(error != null)
             {
@@ -83,7 +83,7 @@ namespace Client
             }
         }
 
-        public async Task<bool> TestConnectionToAuth()
+        public async Task<bool> TestConnectionToAuthAsync()
         {
             HttpClient httpClient = new HttpClient();
 
@@ -103,7 +103,7 @@ namespace Client
             }
         }
 
-        public async Task<bool> Register(UserRegisterDto userRegisterDto)
+        public async Task<bool> RegisterAsync(UserRegisterDto userRegisterDto)
         {
             Console.WriteLine("Trying to register new user...");
 
@@ -124,7 +124,7 @@ namespace Client
             return false;
         }
 
-        public async Task<bool> Login(UserLoginDto userLoginDto)
+        public async Task<bool> LoginAsync(UserLoginDto userLoginDto)
         {
             Console.WriteLine("Trying to log in...");
 
@@ -153,7 +153,8 @@ namespace Client
             return false;
         }
 
-        public async Task<bool> TryToConnectToChatHub()
+        
+        public async Task<bool> TryToConnectToChatHubAsync()
         {
             Console.WriteLine("Connecting to chat hub...");
             if (connection == null)
@@ -175,7 +176,7 @@ namespace Client
             return false;
         }
 
-        public async Task SendMessage(int receiverId, string message)
+        public async Task SendMessageAsync(int receiverId, string message)
         {
             if (connection == null)
             {
