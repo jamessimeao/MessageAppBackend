@@ -23,6 +23,7 @@ namespace Rooms.Data
         private const string COUNT_USERS_IN_ROOM_PROCEDURE = "dbo.countUsersInRoom";
         private const string REMOVE_USER_FROM_ROOM = "dbo.removeUserFromRoom";
         private const string UPDATE_USER_ROLE_IN_ROOM_PROCEDURE = "dbo.updateUserRoleInRoom";
+        private const string GET_ROLE_IN_ROOM_FOR_USER_PROCEDURE = "dbo.getRoleInRoomForUser";
 
         // users table
         private const string EMAIL_VARIABLE = "email";
@@ -131,6 +132,22 @@ namespace Rooms.Data
                 parameters,
                 commandType: CommandType.StoredProcedure
             );
+        }
+
+        public async Task<RoleInRoom?> GetRoleInRoomForUser(int roomId, int userId)
+        {
+            DynamicParameters parameters = new();
+            parameters.Add(ROOMID_VARIABLE, roomId);
+            parameters.Add(USERID_VARIABLE, userId);
+
+            RoleInRoom? roleInRoom = await connection.QuerySingleOrDefaultAsync<RoleInRoom>
+            (
+                GET_ROLE_IN_ROOM_FOR_USER_PROCEDURE,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return roleInRoom;
         }
 
         //************************************* users table *********************************************
