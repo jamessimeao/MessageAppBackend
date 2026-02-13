@@ -116,5 +116,25 @@ namespace Rooms.Controllers
             return Ok();
         }
 
+        [HttpDelete]
+        public async Task<ActionResult> RemoveUserFromRoomAsync(int roomId, string userEmail)
+        {
+            // First check if the user has authority to do it.
+            int? userId = await GetUserIdFromEmail(User);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            bool authorized = await IsUserAuthorizedToConfigureRoom(roomId, userId.Value);
+            if (!authorized)
+            {
+                return Forbid();
+            }
+
+            await dataAccess.RemoveUserFromRoomAsync(roomId, userId.Value);
+            return Ok();
+        }
+
     }
 }
