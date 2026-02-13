@@ -18,7 +18,7 @@ namespace Client
         private const string chatHubUrl = "http://messageapp/Message/";
         private const string registerUrl = "http://messageapp/Auth/Register";
         private const string loginUrl = "http://messageapp/Auth/Login";
-        private const string testAuthConnection = "http://messageapp/Auth/TestConnection";
+        private const string testAuthConnectionUrl = "http://messageapp/Auth/TestConnection";
 
         private readonly JsonSerializerOptions jsonSerializerOptions;
 
@@ -90,7 +90,7 @@ namespace Client
             HttpClient httpClient = new HttpClient();
 
             // Test connection first
-            HttpResponseMessage responseMessageConnectionTest = await httpClient.GetAsync(testAuthConnection);
+            HttpResponseMessage responseMessageConnectionTest = await httpClient.GetAsync(testAuthConnectionUrl);
             if (!responseMessageConnectionTest.IsSuccessStatusCode)
             {
                 Console.WriteLine("Failed to connect to Auth service.");
