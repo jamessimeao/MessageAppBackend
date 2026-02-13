@@ -1,6 +1,7 @@
 ﻿using JWTAuth.Dtos;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 
