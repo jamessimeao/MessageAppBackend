@@ -153,7 +153,23 @@ namespace Client
             return false;
         }
 
-        
+        public async Task<int> CreateRoomAsync(string name)
+        {
+            HttpClient httpClient = new HttpClient();
+
+            string serializedJson = JsonSerializer.Serialize(new { Name = name});
+            Console.WriteLine($"json to post {serializedJson}");
+            using StringContent jsonContent = new StringContent(serializedJson, Encoding.UTF8, "application/json");
+            HttpResponseMessage responseMessage = await httpClient.PostAsync(registerUrl, jsonContent);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                int roomId = await responseMessage.Content.ReadFromJsonAsync<int>();
+                Console.WriteLine($"response: {roomId}");
+                return roomId;
+            }
+            throw new Exception("Failed to create room.");
+        }
+
         public async Task<bool> TryToConnectToChatHubAsync()
         {
             Console.WriteLine("Connecting to chat hub...");
