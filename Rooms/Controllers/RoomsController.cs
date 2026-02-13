@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rooms.Data;
+using Rooms.Dtos;
 using Rooms.Roles;
+using System.Data;
 using System.Security.Claims;
 
 namespace Rooms.Controllers
@@ -112,7 +114,10 @@ namespace Rooms.Controllers
                 return Forbid();
             }
 
-            await dataAccess.AddUserToRoomAsync(roomId, userId.Value, roleInRoom);
+            // Get id of user to be added
+            int userToAddId = await dataAccess.GetUserIdFromEmail(addUserToRoomDto.UserEmail);
+
+            await dataAccess.AddUserToRoomAsync(addUserToRoomDto.RoomId, userToAddId, addUserToRoomDto.RoleInRoom);
             return Ok();
         }
 
@@ -132,7 +137,10 @@ namespace Rooms.Controllers
                 return Forbid();
             }
 
-            await dataAccess.RemoveUserFromRoomAsync(roomId, userId.Value);
+            // Get id of user to be removed
+            int userToRemoveId = await dataAccess.GetUserIdFromEmail(removeUserFromRoomDto.UserEmail);
+
+            await dataAccess.RemoveUserFromRoomAsync(removeUserFromRoomDto.RoomId, userToRemoveId);
             return Ok();
         }
 
@@ -152,7 +160,15 @@ namespace Rooms.Controllers
                 return Forbid();
             }
 
-            await dataAccess.UpdateUserRoleInRoom(roomId, userId.Value, roleInRoom);
+            // Get id of user to update role
+            int userToUpdateRoleId = await dataAccess.GetUserIdFromEmail(updateUserRoleInRoomDto.UserEmail);
+
+            await dataAccess.UpdateUserRoleInRoom
+            (
+                updateUserRoleInRoomDto.RoomId,
+                userToUpdateRoleId,
+                updateUserRoleInRoomDto.RoleInRoom
+            );
 
             return Ok();
         }
