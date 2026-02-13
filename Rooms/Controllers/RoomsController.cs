@@ -22,6 +22,19 @@ namespace Rooms.Controllers
             return userId;
         }
 
+        private async Task<bool> IsUserAuthorizedToConfigureRoom(int roomId, int userId)
+        {
+            // Get the role the user has for the room with given id
+            RoleInRoom? roleInRoom = await dataAccess.GetRoleInRoomForUser(roomId, userId);
+            if (roleInRoom == null || roleInRoom != RoleInRoom.Admin)
+            {
+                // user is not in room
+                return false;
+            }
+
+            return true;
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> CreateRoomAndAddUserToItAsync(string name)
         {
