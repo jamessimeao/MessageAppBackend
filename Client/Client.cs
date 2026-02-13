@@ -20,6 +20,8 @@ namespace Client
         private const string loginUrl = "http://messageapp/Auth/Login";
         private const string testAuthConnectionUrl = "http://messageapp/Auth/TestConnection";
 
+        private const string createRoomUrl = "http://messageapp/Rooms/CreateRoomAndAddUserToIt";
+
         private readonly JsonSerializerOptions jsonSerializerOptions;
 
         public Client(UserRegisterDto userRegisterDto)
@@ -169,7 +171,7 @@ namespace Client
             Console.WriteLine($"json to post {serializedJson}");
             using StringContent jsonContent = new StringContent(serializedJson, Encoding.UTF8, "application/json");
 
-            HttpResponseMessage responseMessage = await httpClient.PostAsync(registerUrl, jsonContent);
+            HttpResponseMessage responseMessage = await httpClient.PostAsync(createRoomUrl, jsonContent);
             if (responseMessage.IsSuccessStatusCode)
             {
                 int roomId = await responseMessage.Content.ReadFromJsonAsync<int>();
