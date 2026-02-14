@@ -178,7 +178,7 @@ namespace Client
                 Console.WriteLine($"response: {roomId}");
                 return roomId;
             }
-            throw new Exception("Failed to create room.");
+            throw new Exception($"Failed to create room:\n{await responseMessage.Content.ReadAsStringAsync()}");
         }
 
         public async Task<bool> TryToConnectToChatHubAsync()
