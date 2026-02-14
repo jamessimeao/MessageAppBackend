@@ -57,6 +57,7 @@ namespace Message.SignalR.Hubs
             bool hasValueRoomId = Context.Items.TryGetValue(roomsIdsKey, out valueRoomId);
             if (!hasValueRoomId || valueRoomId == null)
             {
+                Console.WriteLine("Null rooms ids in Context.Items");
                 return;
             }
             IEnumerable<int> roomsIds = (IEnumerable<int>)valueRoomId;
@@ -83,6 +84,7 @@ namespace Message.SignalR.Hubs
             bool hasValueUserId = Context.Items.TryGetValue(userIdKey, out valueUserId);
             if (!hasValueUserId || valueUserId == null)
             {
+                Console.WriteLine("Null user id in Context.Items");
                 return;
             }
             int senderId = (int)valueUserId;
@@ -107,6 +109,7 @@ namespace Message.SignalR.Hubs
             }
 
             int userId = await _dataAccess.GetUserIdAsync(userEmail);
+            Console.WriteLine("Adding user id to Context.Items");
             Context.Items.Add(userIdKey, userId);
             return true;
         }
@@ -123,6 +126,7 @@ namespace Message.SignalR.Hubs
             bool hasValue = Context.Items.TryGetValue(roomsIdsKey, out value);
             if (!hasValue || value == null)
             {
+                Console.WriteLine("Null rooms ids in Context.Items");
                 return false;
             }
 
@@ -141,6 +145,7 @@ namespace Message.SignalR.Hubs
             bool hasValueUserId = Context.Items.TryGetValue(userIdKey, out valueUserId);
             if (!hasValueUserId || valueUserId == null)
             {
+                Console.WriteLine("Null user id in Context.Items");
                 return;
             }
             int userId = (int)valueUserId;
