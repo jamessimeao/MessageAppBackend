@@ -73,7 +73,7 @@ namespace Client
         {
             if(error != null)
             {
-                Console.WriteLine($"error: {error.Message}");
+                Console.WriteLine($"Error: {error.Message}");
             }
 
             if(connection != null)
@@ -95,7 +95,7 @@ namespace Client
             HttpResponseMessage responseMessageConnectionTest = await httpClient.GetAsync(testAuthConnectionUrl);
             if (!responseMessageConnectionTest.IsSuccessStatusCode)
             {
-                Console.WriteLine("Failed to connect to Auth service.");
+                Console.WriteLine("Error: Failed to connect to Auth service.");
                 return false;
             }
             else
@@ -124,7 +124,7 @@ namespace Client
                 return true;
             }
 
-            Console.WriteLine("Failed to register new user or error in server");
+            Console.WriteLine("Error: Failed to register new user or error in server");
             return false;
         }
 
@@ -153,7 +153,7 @@ namespace Client
                 return true;
             }
 
-            Console.WriteLine($"Failed to log in. Status code: {responseMessage.StatusCode}");
+            Console.WriteLine($"Error: Failed to log in. Status code: {responseMessage.StatusCode}");
             return false;
         }
 
@@ -163,7 +163,7 @@ namespace Client
 
             if(token == null)
             {
-                throw new Exception("Null token");
+                throw new Exception("Error: Null token");
             }
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
@@ -178,7 +178,7 @@ namespace Client
                 Console.WriteLine($"roomId = {roomId}");
                 return roomId;
             }
-            throw new Exception($"Failed to create room:\n{await responseMessage.Content.ReadAsStringAsync()}");
+            throw new Exception($"Error: Failed to create room:\n{await responseMessage.Content.ReadAsStringAsync()}");
         }
 
         public async Task<bool> TryToConnectToChatHubAsync()
