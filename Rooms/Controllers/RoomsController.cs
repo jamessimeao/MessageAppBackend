@@ -38,10 +38,10 @@ namespace Rooms.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> CreateRoomAndAddUserToItAsync(string name)
+        public async Task<ActionResult<int>> CreateRoomAndAddUserToItAsync(CreateRoomDto createRoomDto)
         {
             // Create a new room and get its id
-            int roomId = await dataAccess.CreateRoomAsync(name);
+            int roomId = await dataAccess.CreateRoomAsync(createRoomDto.Name);
 
             // Get the user id
             int? userId = await GetUserIdFromEmail(User);
@@ -57,7 +57,7 @@ namespace Rooms.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> DeleteRoomAsync(int roomId)
+        public async Task<ActionResult> DeleteRoomAsync(DeleteRoomDto deleteRoomDto)
         {
             // Get the user id
             int? userId = await GetUserIdFromEmail(User);
@@ -66,18 +66,18 @@ namespace Rooms.Controllers
                 return Unauthorized();
             }
             // First check if the user has authority to delete the room
-            bool authorized = await IsUserAuthorizedToConfigureRoom(roomId, userId.Value);
+            bool authorized = await IsUserAuthorizedToConfigureRoom(deleteRoomDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
             }
 
-            await dataAccess.DeleteRoomAsync(roomId);
+            await dataAccess.DeleteRoomAsync(deleteRoomDto.RoomId);
             return Ok();
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateRoomNameAsync(int roomId, string name)
+        public async Task<ActionResult> UpdateRoomNameAsync(UpdateRoomNameDto updateRoomNameDto)
         {
             // First check if the user has authority to update the room
             int? userId = await GetUserIdFromEmail(User);
@@ -86,19 +86,19 @@ namespace Rooms.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await IsUserAuthorizedToConfigureRoom(roomId, userId.Value);
+            bool authorized = await IsUserAuthorizedToConfigureRoom(updateRoomNameDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
             }
 
-            await dataAccess.UpdateRoomNameAsync(roomId, name);
+            await dataAccess.UpdateRoomNameAsync(updateRoomNameDto.RoomId, updateRoomNameDto.Name);
             return Ok();
         }
 
         //*******************************************************************
         [HttpPost]
-        public async Task<ActionResult> AddUserToRoomAsync(int roomId, string userEmail, RoleInRoom roleInRoom)
+        public async Task<ActionResult> AddUserToRoomAsync(AddUserToRoomDto addUserToRoomDto)
         {
             // First check if the user that is adding the other one to the room
             // has authority to do it.
@@ -108,7 +108,7 @@ namespace Rooms.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await IsUserAuthorizedToConfigureRoom(roomId, userId.Value);
+            bool authorized = await IsUserAuthorizedToConfigureRoom(addUserToRoomDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
@@ -122,7 +122,7 @@ namespace Rooms.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> RemoveUserFromRoomAsync(int roomId, string userEmail)
+        public async Task<ActionResult> RemoveUserFromRoomAsync(RemoveUserFromRoomDto removeUserFromRoomDto)
         {
             // First check if the user has authority to do it.
             int? userId = await GetUserIdFromEmail(User);
@@ -131,7 +131,7 @@ namespace Rooms.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await IsUserAuthorizedToConfigureRoom(roomId, userId.Value);
+            bool authorized = await IsUserAuthorizedToConfigureRoom(removeUserFromRoomDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
@@ -145,7 +145,7 @@ namespace Rooms.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateUserRoleInRoom(int roomId, string userEmail, RoleInRoom roleInRoom)
+        public async Task<ActionResult> UpdateUserRoleInRoom(UpdateUserRoleInRoomDto updateUserRoleInRoomDto)
         {
             // First check if the user has authority to do it.
             int? userId = await GetUserIdFromEmail(User);
@@ -154,7 +154,7 @@ namespace Rooms.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await IsUserAuthorizedToConfigureRoom(roomId, userId.Value);
+            bool authorized = await IsUserAuthorizedToConfigureRoom(updateUserRoleInRoomDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
