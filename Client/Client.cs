@@ -175,7 +175,7 @@ namespace Client
             if (responseMessage.IsSuccessStatusCode)
             {
                 int roomId = await responseMessage.Content.ReadFromJsonAsync<int>();
-                Console.WriteLine($"response: {roomId}");
+                Console.WriteLine($"roomId = {roomId}");
                 return roomId;
             }
             throw new Exception($"Failed to create room:\n{await responseMessage.Content.ReadAsStringAsync()}");
