@@ -6,6 +6,8 @@ namespace Client
     {
         public static async Task Main()
         {
+            bool productionUrls = false;
+
             UserRegisterDto userRegisterDto = new UserRegisterDto()
             {
                 Email = "john@hotmail.com",
@@ -13,7 +15,7 @@ namespace Client
                 Username = "John",
             };
 
-            Client client = new Client(userRegisterDto);
+            Client client = new Client(userRegisterDto, productionUrls);
 
             bool connectionSuccessful = await client.TestConnectionToAuthAsync();
             if(!connectionSuccessful)
