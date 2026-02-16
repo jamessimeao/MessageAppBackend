@@ -1,7 +1,7 @@
 <Solution>
   <Project Path="Client/Client.csproj" Id="51fbc5b4-d8bc-448a-9ca3-06dc6c50c850" />
-  <Project Path="JWTAuth/JWTAuth.csproj" />
-  <Project Path="JWTAuthTests/JWTAuthTests.csproj" Id="99e7a1ec-34c0-46fd-b2e5-7ed389225865" />
+  <Project Path="Auth/Auth.csproj" />
+  <Project Path="AuthTests/AuthTests.csproj" Id="99e7a1ec-34c0-46fd-b2e5-7ed389225865" />
   <Project Path="KafkaConsumer/KafkaConsumer.csproj" Id="10c3f8a6-4511-4513-80d6-b8064e19a774" />
   <Project Path="MessageRealTime/MessageRealTime.csproj" Id="90f5d913-4caa-4e7e-b339-02b230a8e025" />
   <Project Path="MessageREST/MessageREST.csproj" Id="b3eb9fed-7b0c-4b37-a0a9-463acf4336ca" />
