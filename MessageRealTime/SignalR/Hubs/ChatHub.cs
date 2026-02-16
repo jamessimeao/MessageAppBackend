@@ -99,6 +99,88 @@ namespace Message.SignalR.Hubs
             await messageTask;
         }
 
+        public async Task<bool> UpdateUserRooms()
+        {
+            // Get the user id from Context.Items
+            object? valueUserId;
+            bool hasValueUserId = Context.Items.TryGetValue(userIdKey, out valueUserId);
+            if (!hasValueUserId || valueUserId == null)
+            {
+                Console.WriteLine("Error: Null user id in Context.Items");
+                return false;
+            }
+            int userId = (int)valueUserId;
+
+            // Get the updated list of rooms ids
+            IOrderedEnumerable<int> roomsIdsNew = (await _dataAccess.GetRoomsIdsAsync(userId)).Order();
+
+            // Get old list of rooms ids
+            IOrderedEnumerable<int> roomsIdsOld;
+            object? value;
+            bool hasValue = Context.Items.TryGetValue(roomsIdsKey, out value);
+            if (!hasValue || value == null)
+            {
+                Console.WriteLine("Error: Null rooms ids in Context.Items");
+                return false;
+            }
+            roomsIdsOld = ((IEnumerable<int>)value).Order();
+
+            // Update the SignalR groups the user is in.
+            // Each SignalR group corresponds to a room.
+            IEnumerator<int> enumeratorOld = roomsIdsOld.GetEnumerator();
+            IEnumerator<int> enumeratorNew = roomsIdsNew.GetEnumerator();
+            
+            bool notTraversedOld = true;
+            bool notTraversedNew = true;
+            int roomIdOld;
+            int roomIdNew;
+            string groupName;
+            List<Task> tasks = new();
+            while (notTraversedOld && notTraversedNew)
+            {
+                roomIdOld = enumeratorOld.Current;
+                roomIdNew = enumeratorNew.Current;
+                if (roomIdOld < roomIdNew)
+                {
+                    // Remove from old room.
+                    groupName = GroupName(roomIdOld);
+                    tasks.Add(Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName));
+                    notTraversedOld = enumeratorOld.MoveNext();
+                }
+                else if (roomIdOld >= roomIdNew)
+                {
+                    // Add to new room.
+                    // If roomIdOld == roomIdNew, this shouldn't be necessary,
+                    // but add again for safety. It is safe to again to the group again.
+                    groupName = GroupName(roomIdNew);
+                    tasks.Add(Groups.AddToGroupAsync(Context.ConnectionId, groupName));
+                    notTraversedNew = enumeratorNew.MoveNext();
+                }
+            }
+            // Remove from all old rooms that remained
+            while(notTraversedOld)
+            {
+                // Remove from old room.
+                roomIdOld = enumeratorOld.Current;
+                groupName = GroupName(roomIdOld);
+                tasks.Add(Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName));
+                notTraversedOld = enumeratorOld.MoveNext();
+            }
+            // Add to all new rooms that remained
+            while(notTraversedNew)
+            {
+                // Add to new room.
+                roomIdNew = enumeratorNew.Current;
+                groupName = GroupName(roomIdNew);
+                tasks.Add(Groups.AddToGroupAsync(Context.ConnectionId, groupName));
+                notTraversedNew = enumeratorNew.MoveNext();
+            }
+
+            await Task.WhenAll(tasks);
+
+            return true;
+        }
+
         private async Task<bool> GetUserId()
         {
             string? userEmail = Context.UserIdentifier;
