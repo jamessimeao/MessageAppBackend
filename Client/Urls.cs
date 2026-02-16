@@ -17,6 +17,7 @@ namespace Client
 
         public Urls(bool productionUrls)
         {
+            Console.WriteLine("Getting urls from configuration...");
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
 
             if (productionUrls)
@@ -40,6 +41,8 @@ namespace Client
                                         ?? throw new Exception("Failed to get ChatHubUrl");
             createRoomUrl = configuration.GetValue<string>("CreateRoomUrl")
                                         ?? throw new Exception("Failed to get CreateRoomUrl");
+
+            Console.WriteLine("Got the urls from configuration successfully");
         }
     }
 }
