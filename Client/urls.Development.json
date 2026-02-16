@@ -1,0 +1,7 @@
+﻿{
+    "TestAuthConnectionUrl": "https://localhost:7264/Auth/TestConnection",
+    "RegisterUrl": "https://localhost:7264/Auth/Register",
+    "LoginUrl": "https://localhost:7264/Auth/Login",
+    "ChatHubUrl": "https://localhost:7145/Message/",
+    "CreateRoomUrl": "https://localhost:7162/Rooms/CreateRoomAndAddUserToIt"
+}
