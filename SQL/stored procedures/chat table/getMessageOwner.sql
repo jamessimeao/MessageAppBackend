@@ -18,7 +18,7 @@ BEGIN
 
     -- Insert statements for procedure here
 	SELECT senderid
-	FROM dbo.chat
+	FROM dbo.messages
 	WHERE id = @messageid;
 END
 GO

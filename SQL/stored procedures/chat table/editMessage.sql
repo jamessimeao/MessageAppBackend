@@ -10,7 +10,7 @@ GO
 CREATE PROCEDURE dbo.editMessage
 	-- Add the parameters for the stored procedure here
 	@messageid INT = NULL,
-	@newmessage NVARCHAR(100) = NULL
+	@newcontent NVARCHAR(100) = NULL
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -18,8 +18,8 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	UPDATE dbo.chat
-	SET message = @newmessage
+	UPDATE dbo.messages
+	SET content = @newcontent
 	WHERE id = @messageid;
 END
 GO

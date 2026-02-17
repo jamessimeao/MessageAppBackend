@@ -11,7 +11,7 @@ CREATE PROCEDURE dbo.saveMessage
 	-- Add the parameters for the stored procedure here
 	@roomid INT = NULL,
 	@senderid INT = NULL,
-	@message NVARCHAR(100) = NULL,
+	@content NVARCHAR(100) = NULL,
 	@time DATETIME = NULL
 AS
 BEGIN
@@ -20,7 +20,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	INSERT INTO dbo.chat (roomid, senderid, message, time)
-		VALUES(@roomid, @senderid, @message, @time);
+	INSERT INTO dbo.messages (roomid, senderid, content, time)
+		VALUES(@roomid, @senderid, @content, @time);
 END
 GO

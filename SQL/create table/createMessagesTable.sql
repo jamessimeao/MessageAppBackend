@@ -1,9 +1,9 @@
-CREATE TABLE dbo.chat
+CREATE TABLE dbo.messages
 (
 	id INT IDENTITY(1,1) PRIMARY KEY,
 	roomid INT NOT NULL,
 	senderid INT NOT NULL,
-	message NVARCHAR(100) NOT NULL,
+	content NVARCHAR(100) NOT NULL,
 	time DATETIME NOT NULL,
 	CONSTRAINT FK_chat_rooms FOREIGN KEY (roomid)
 		REFERENCES rooms(id)

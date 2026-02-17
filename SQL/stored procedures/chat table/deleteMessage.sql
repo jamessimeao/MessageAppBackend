@@ -17,7 +17,7 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	DELETE FROM dbo.chat
+	DELETE FROM dbo.messages
 	WHERE id = @messageid;
 END
 GO

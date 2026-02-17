@@ -18,8 +18,8 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT TOP(@quantity) id, senderid, message, time
-	FROM dbo.chat
+	SELECT TOP(@quantity) id, senderid, content, time
+	FROM dbo.messages
 	WHERE roomid = @roomid
 	ORDER BY id DESC;
 END
