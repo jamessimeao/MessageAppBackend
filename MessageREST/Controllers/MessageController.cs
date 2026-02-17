@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MessageREST.Data;
+using Microsoft.AspNetCore.Mvc;
 
 namespace MessageREST.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
     [Authorize]
-    public class MessageController : ControllerBase
+    public class MessageController(IDataAccess dataAccess) : ControllerBase
     {
     }
 }
