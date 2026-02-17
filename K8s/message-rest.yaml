@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: message-rest-deployment
+  labels:
+    app: message-rest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: message-rest
+  template:
+    metadata:
+      labels:
+        app: message-rest
+    spec:
+      containers:
+      - name: message-rest
+        image: jmstoledo/message-rest:v1
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: secrets
+          mountPath: /app/secrets
+          readOnly: true
+        livenessProbe:
+          tcpSocket:
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 30
+      volumes:
+      - name: secrets
+        projected:
+          sources:
+          - secret:
+              name: jwt-settings
+          - secret:
+              name: db-settings
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: message-rest-clusterip
+spec:
+  type: ClusterIP
+  selector:
+    app: message-rest
+  ports:
+  - name: message-rest
+    protocol: TCP
+    port: 80
+    targetPort: 8080

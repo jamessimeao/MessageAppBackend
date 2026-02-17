@@ -1,7 +1,8 @@
 kubectl create namespace messageapp
 kubectl apply -f mssql.yaml -n messageapp
 kubectl apply -f auth.yaml -n messageapp # requires mssql
-kubectl apply -f rooms.yaml -n messageapp
+kubectl apply -f rooms.yaml -n messageapp # requires auth
+kubectl apply -f message-rest.yaml -n messageapp # requires auth
 
 # Kafka
 kubectl create namespace kafka
