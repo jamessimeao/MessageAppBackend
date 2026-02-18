@@ -40,6 +40,12 @@ namespace Message.SignalR.Hubs
                 throw new Exception("Error: Failed to get user id.");
             }
             await AddToGroupsAsync();
+
+            NotificationDto notificationDto = new()
+            {
+                Content = "Connected." 
+            };
+            await Clients.Caller.ReceiveNotificationAsync(notificationDto);
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
