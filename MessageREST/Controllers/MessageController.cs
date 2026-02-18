@@ -2,11 +2,11 @@
 using MessageREST.Dtos;
 using MessageREST.Kafka.Keys;
 using MessageREST.Kafka.Producer;
+using MessageREST.Kafka.Values;
 using MessageREST.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace MessageREST.Controllers
 {
@@ -118,12 +118,12 @@ namespace MessageREST.Controllers
                 EventType = MESSAGE_UPDATED_EVENT,
             };
 
-            string value = JsonSerializer.Serialize(new
+            MessageUpdated value = new()
             {
                 MessageId = editMessageDto.MessageId,
-            });
+            };
 
-            await kafkaProducer.ProduceToKafkaAsync(key, value);
+            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
 
             return Ok();
         }
@@ -151,12 +151,12 @@ namespace MessageREST.Controllers
                 EventType = MESSAGE_UPDATED_EVENT,
             };
 
-            string value = JsonSerializer.Serialize(new
+            MessageUpdated value = new()
             {
                 MessageId = deleteMessageDto.MessageId,
-            });
+            };
 
-            await kafkaProducer.ProduceToKafkaAsync(key, value);
+            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
 
             return Ok();
         }

@@ -4,9 +4,9 @@ using Rooms.Data;
 using Rooms.Dtos;
 using Rooms.Kafka.Keys;
 using Rooms.Kafka.Producer;
+using Rooms.Kafka.Values;
 using Rooms.Roles;
 using System.Security.Claims;
-using System.Text.Json;
 
 namespace Rooms.Controllers
 {
@@ -69,15 +69,15 @@ namespace Rooms.Controllers
                 EventType = ROOM_CREATED_EVENT,
             };
 
-            string value = JsonSerializer.Serialize(new
+            RoomCreated value = new()
             {
                 RoomId = roomId,
                 UserId = userId.Value,
                 RoleInRoom = roleInRoom,
-            });
+            };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, value);
+            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
             
             return Ok(roomId);
         }
@@ -105,13 +105,13 @@ namespace Rooms.Controllers
                 EventType = ROOM_DELETED_EVENT,
             };
 
-            string value = JsonSerializer.Serialize(new
+            RoomDeleted value = new()
             {
-                RoomId = deleteRoomDto.RoomId,
-            });
+                RoomId = deleteRoomDto.RoomId
+            };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, value);
+            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
 
             return Ok();
         }
@@ -165,14 +165,14 @@ namespace Rooms.Controllers
                 EventType = ADD_USER_TO_ROOM_EVENT,
             };
 
-            string value = JsonSerializer.Serialize(new
+            AddUserToRoom value = new()
             {
                 RoomId = addUserToRoomDto.RoomId,
                 UserId = userToAddId,
-            });
+            };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, value);
+            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
 
             return Ok();
         }
@@ -203,14 +203,14 @@ namespace Rooms.Controllers
                 EventType = REMOVE_USER_FROM_ROOM_EVENT,
             };
 
-            string value = JsonSerializer.Serialize(new
+            RemoveUserFromRoom value = new()
             {
                 RoomId = removeUserFromRoomDto.RoomId,
                 UserId = userToRemoveId,
-            });
+            };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, value);
+            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
 
             return Ok();
         }
