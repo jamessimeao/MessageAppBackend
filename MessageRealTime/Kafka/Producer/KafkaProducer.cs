@@ -38,23 +38,14 @@ namespace MessageRealTime.Kafka.Producer
                         .Build();
         }
 
-        public async Task ProduceToKafkaAsync(int messageId, int senderId, int receiverId, string message, DateTime time)
+        public async Task ProduceToKafkaAsync(Key key, string value)
         {
-            // There will be multiple hubs, one for each container that runs the application.
-            // As such, a user connected to some container can't send a message to a user in another container
-            // by useing the same hub. Instead, the message will be sent to Kafka.
             Console.WriteLine("KafkaProducer sending message to Kafka...");
 
             Message<Key, string> kafkaMessage = new()
             {
-                Key = new Key()
-                {
-                    MessageId = messageId,
-                    SenderId = senderId,
-                    ReceiverId = receiverId,
-                    Time = time,
-                },
-                Value = message,
+                Key = key,
+                Value = value,
             };
 
             producer.Produce

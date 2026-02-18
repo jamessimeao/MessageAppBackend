@@ -1,7 +1,9 @@
-﻿namespace MessageRealTime.Kafka.Producer
+﻿using MessageRealTime.Kafka.Keys;
+
+namespace MessageRealTime.Kafka.Producer
 {
     public interface IKafkaProducer : IAsyncDisposable
     {
-        public Task ProduceToKafkaAsync(int messageId, int senderId, int receiverId, string message, DateTime time);
+        public Task ProduceToKafkaAsync(Key key, string value);
     }
 }
