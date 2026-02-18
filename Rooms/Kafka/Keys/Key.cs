@@ -1,10 +1,11 @@
-﻿using System.Text.Json;
+﻿using Rooms.Kafka.EventTypes;
+using System.Text.Json;
 
 namespace Rooms.Kafka.Keys
 {
     public class Key
     {
-        public required string EventType { get; set; }
+        public required EventType EventType { get; set; }
 
         public override string ToString()
         {

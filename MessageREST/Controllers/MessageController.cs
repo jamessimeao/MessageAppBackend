@@ -1,5 +1,6 @@
 ﻿using MessageREST.Data;
 using MessageREST.Dtos;
+using MessageREST.Kafka.EventTypes;
 using MessageREST.Kafka.Keys;
 using MessageREST.Kafka.Producer;
 using MessageREST.Kafka.Values;
@@ -16,9 +17,6 @@ namespace MessageREST.Controllers
     public class MessageController(IDataAccess dataAccess, IKafkaProducer kafkaProducer) : ControllerBase
     {
         private int maxMessagesQuantity = 50;
-
-        // For Kafka producer
-        private const string MESSAGE_UPDATED_EVENT = "message-updated";
 
         // From Rooms controller
         private async Task<int?> GetUserIdFromEmail(ClaimsPrincipal user)
@@ -115,7 +113,7 @@ namespace MessageREST.Controllers
 
             Key key = new()
             {
-                EventType = MESSAGE_UPDATED_EVENT,
+                EventType = EventType.MESSAGE_UPDATED_EVENT,
             };
 
             MessageUpdated value = new()
@@ -148,7 +146,7 @@ namespace MessageREST.Controllers
 
             Key key = new()
             {
-                EventType = MESSAGE_UPDATED_EVENT,
+                EventType = EventType.MESSAGE_UPDATED_EVENT,
             };
 
             MessageUpdated value = new()
