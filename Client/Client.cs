@@ -231,6 +231,7 @@ namespace Client
                     Content = content,
                     Time = time,
                 };
+                
                 await connection.InvokeAsync("SendMessageAsync", sendMessageDto);
                 Console.WriteLine("Message sent.");
             }
