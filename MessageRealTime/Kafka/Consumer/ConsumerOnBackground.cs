@@ -1,6 +1,6 @@
-﻿using KafkaConsumer.Data;
+﻿using MessageRealTime.Data;
 
-namespace KafkaConsumer.Kafka
+namespace MessageRealTime.Kafka
 {
     public class ConsumerOnBackground : BackgroundService
     {

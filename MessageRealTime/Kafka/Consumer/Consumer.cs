@@ -3,7 +3,7 @@ using MessageRealTime.Data;
 using MessageRealTime.Kafka.Keys;
 using System.Text.Json;
 
-namespace KafkaConsumer.Kafka
+namespace MessageRealTime.Kafka
 {
     public class Consumer : IConsumer
     {

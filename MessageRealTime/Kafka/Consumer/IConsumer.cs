@@ -1,4 +1,4 @@
-﻿namespace KafkaConsumer.Kafka
+﻿namespace MessageRealTime.Kafka
 {
     public interface IConsumer : IAsyncDisposable
     {
