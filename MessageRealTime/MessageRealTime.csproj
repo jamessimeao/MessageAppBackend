@@ -23,8 +23,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Kafka\ValueDeserializer\" />
-  </ItemGroup>
-
 </Project>

@@ -96,8 +96,6 @@ builder.Services.AddSignalR();
 // To uniquely identify the user of SignalR
 builder.Services.AddSingleton<IUserIdProvider, UserIdProvider>();
 
-builder.Services.AddHostedService<ConsumerOnBackground>();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
