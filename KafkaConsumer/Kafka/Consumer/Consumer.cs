@@ -84,13 +84,8 @@ namespace KafkaConsumer.Kafka
             {
                 throw new Exception("Error: Null key.");
             }
-            int senderId = key.SenderId;
-            int roomId = key.ReceiverId;
-            DateTime time = key.Time;
-            string content = consumeResult.Message.Value;
 
-            // Store message in database
-            await _dataAccess.SaveMessage(senderId, roomId, content, time);
+            Console.WriteLine($"Key =\n{key}\nvalue =\n{consumeResult.Message.Value}");
 
             Console.WriteLine("KafkaConsumer consumed message successfully.");
         }
