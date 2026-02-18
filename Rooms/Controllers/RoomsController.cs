@@ -18,6 +18,7 @@ namespace Rooms.Controllers
         private const string ROOM_CREATED_EVENT = "room-created";
         private const string ROOM_DELETED_EVENT = "room-deleted";
         private const string ADD_USER_TO_ROOM_EVENT = "add-user-to-room";
+        private const string REMOVE_USER_FROM_ROOM_EVENT = "remove-user-from-room";
 
         //*****************************************************************************
         private async Task<int?> GetUserIdFromEmail(ClaimsPrincipal user)
@@ -195,6 +196,21 @@ namespace Rooms.Controllers
             int userToRemoveId = await dataAccess.GetUserIdFromEmail(removeUserFromRoomDto.UserEmail);
 
             await dataAccess.RemoveUserFromRoomAsync(removeUserFromRoomDto.RoomId, userToRemoveId);
+
+            Key key = new()
+            {
+                EventType = REMOVE_USER_FROM_ROOM_EVENT,
+            };
+
+            string value = JsonSerializer.Serialize(new
+            {
+                RoomId = removeUserFromRoomDto.RoomId,
+                UserId = userToRemoveId,
+            });
+
+            // Produce an event
+            await kafkaProducer.ProduceToKafkaAsync(key, value);
+
             return Ok();
         }
 
