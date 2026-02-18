@@ -16,19 +16,19 @@ namespace MessageRealTime.SignalR.Hubs
     public class ChatHub : Hub<IChatClient>
     {
         private readonly IDataAccess _dataAccess;
-        private readonly IKafkaProducer _kafkaProducer;
+        //private readonly IKafkaProducer _kafkaProducer;
 
         // Keys to be used with Context.Items dictionary
         private const string userIdKey = "userId";
         private const string roomsIdsKey = "roomsIds";
 
-        public ChatHub(IConfiguration configuration, IDataAccess dataAccess, IKafkaProducer kafkaProducer)
+        public ChatHub(IConfiguration configuration, IDataAccess dataAccess)//, IKafkaProducer kafkaProducer)
         {
             Console.WriteLine("------------------------------------------------------");
             Console.WriteLine("Constructing ChatHub...");
 
             _dataAccess = dataAccess;
-            _kafkaProducer = kafkaProducer;
+            //_kafkaProducer = kafkaProducer;
         }
 
         public override async Task OnConnectedAsync()
