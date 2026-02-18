@@ -3,6 +3,8 @@ using MessageRealTime.Data;
 using MessageRealTime.Kafka.EventTypes;
 using MessageRealTime.Kafka.Keys;
 using MessageRealTime.Kafka.Values;
+using MessageRealTime.SignalR.Hubs;
+using Microsoft.AspNetCore.SignalR;
 using System.Text.Json;
 
 namespace MessageRealTime.Kafka
@@ -16,10 +18,12 @@ namespace MessageRealTime.Kafka
         private readonly IConsumer<string, string> consumer;
 
         private readonly IDataAccess _dataAccess;
+        private readonly IHubContext<ChatHub, IChatClient> _hubContext;
 
-        public Consumer(IConfiguration configuration, IDataAccess dataAccess)
+        public Consumer(IConfiguration configuration, IDataAccess dataAccess, IHubContext<ChatHub, IChatClient> hubContext)
         {
             _dataAccess = dataAccess;
+            _hubContext = hubContext;
 
             Console.WriteLine("Constructing KafkaConsumer...");
 
