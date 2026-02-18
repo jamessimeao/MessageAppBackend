@@ -72,7 +72,7 @@ namespace Rooms.Controllers
             };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
+            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<RoomCreated>.Serialize(value));
             
             return Ok(roomId);
         }
@@ -106,7 +106,7 @@ namespace Rooms.Controllers
             };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
+            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<RoomDeleted>.Serialize(value));
 
             return Ok();
         }
@@ -167,7 +167,7 @@ namespace Rooms.Controllers
             };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
+            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<AddUserToRoom>.Serialize(value));
 
             return Ok();
         }
@@ -205,7 +205,7 @@ namespace Rooms.Controllers
             };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, value.ToString());
+            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<RemoveUserFromRoom>.Serialize(value));
 
             return Ok();
         }
