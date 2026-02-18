@@ -71,6 +71,9 @@ namespace Client
                 Console.WriteLine($"Error: {errorMessageDto.Content}");
             });
 
+            connection.On<NotificationDto>("ReceiveNotificationAsync", async (NotificationDto notificationDto) =>
+            {
+                Console.WriteLine($"Notification: {notificationDto.Content}");
             });
         }
 

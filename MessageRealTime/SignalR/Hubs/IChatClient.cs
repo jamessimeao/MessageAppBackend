@@ -10,5 +10,6 @@ namespace Message.SignalR.Hubs
     {
         public Task ReceiveMessageAsync(ReceiveMessageDto receiveMessageDto);
         public Task ReceiveErrorMessageAsync(ErrorMessageDto errorMessage);
+        public Task ReceiveNotificationAsync(NotificationDto notificationDto);
     }
 }
