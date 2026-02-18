@@ -10,7 +10,7 @@ namespace Rooms.Controllers
     [ApiController]
     [Route("[controller]/[action]")]
     [Authorize]
-    public class RoomsController(IDataAccess dataAccess) : ControllerBase
+    public class RoomsController(IDataAccess dataAccess, IKafkaProducer kafkaProducer) : ControllerBase
     {
         private async Task<int?> GetUserIdFromEmail(ClaimsPrincipal user)
         {

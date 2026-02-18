@@ -10,7 +10,7 @@ namespace MessageREST.Controllers
     [ApiController]
     [Route("[controller]/[action]")]
     [Authorize]
-    public class MessageController(IDataAccess dataAccess) : ControllerBase
+    public class MessageController(IDataAccess dataAccess, IKafkaProducer kafkaProducer) : ControllerBase
     {
         private int maxMessagesQuantity = 50;
 
