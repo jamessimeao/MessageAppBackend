@@ -155,20 +155,6 @@ namespace Rooms.Controllers
 
             await dataAccess.AddUserToRoomAsync(addUserToRoomDto.RoomId, userToAddId, addUserToRoomDto.RoleInRoom);
 
-            Key key = new()
-            {
-                EventType = EventType.ADD_USER_TO_ROOM_EVENT,
-            };
-
-            AddUserToRoom value = new()
-            {
-                RoomId = addUserToRoomDto.RoomId,
-                UserId = userToAddId,
-            };
-
-            // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<AddUserToRoom>.Serialize(value));
-
             return Ok();
         }
 
@@ -192,20 +178,6 @@ namespace Rooms.Controllers
             int userToRemoveId = await dataAccess.GetUserIdFromEmail(removeUserFromRoomDto.UserEmail);
 
             await dataAccess.RemoveUserFromRoomAsync(removeUserFromRoomDto.RoomId, userToRemoveId);
-
-            Key key = new()
-            {
-                EventType = EventType.REMOVE_USER_FROM_ROOM_EVENT,
-            };
-
-            RemoveUserFromRoom value = new()
-            {
-                RoomId = removeUserFromRoomDto.RoomId,
-                UserId = userToRemoveId,
-            };
-
-            // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<RemoveUserFromRoom>.Serialize(value));
 
             return Ok();
         }
