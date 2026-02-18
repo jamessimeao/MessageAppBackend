@@ -118,19 +118,6 @@ namespace MessageRealTime.SignalR.Hubs
                 Time = sendMessageDto.Time,
             };
             await Clients.Group(groupName).ReceiveMessageAsync(receiveMessageDto);
-            
-            /*Console.WriteLine("ChatHub sending message to Kafka...");
-            Task kafkaTask = _kafkaProducer.ProduceToKafkaAsync
-                            (
-                                messageId,
-                                senderId,
-                                sendMessageDto.RoomId,
-                                sendMessageDto.Content,
-                                sendMessageDto.Time
-                            );
-
-            await messageTask;
-            await kafkaTask;*/
         }
 
         /*
