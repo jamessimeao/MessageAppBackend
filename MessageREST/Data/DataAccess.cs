@@ -117,7 +117,6 @@ namespace MessageREST.Data
             return userIsInRoom;
         }
 
-
         // Copied from Rooms project
         public async Task<int> GetUserIdFromEmail(string userEmail)
         {
