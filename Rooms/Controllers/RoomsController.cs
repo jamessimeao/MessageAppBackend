@@ -16,6 +16,7 @@ namespace Rooms.Controllers
     public class RoomsController(IDataAccess dataAccess, IKafkaProducer kafkaProducer) : ControllerBase
     {
         private const string ROOM_CREATED_EVENT = "room-created";
+        private const string ROOM_DELETED_EVENT = "room-deleted";
         //*****************************************************************************
         private async Task<int?> GetUserIdFromEmail(ClaimsPrincipal user)
         {
@@ -95,6 +96,20 @@ namespace Rooms.Controllers
             }
 
             await dataAccess.DeleteRoomAsync(deleteRoomDto.RoomId);
+
+            Key key = new()
+            {
+                EventType = ROOM_DELETED_EVENT,
+            };
+
+            string value = JsonSerializer.Serialize(new
+            {
+                RoomId = deleteRoomDto.RoomId,
+            });
+
+            // Produce an event
+            await kafkaProducer.ProduceToKafkaAsync(key, value);
+
             return Ok();
         }
 
