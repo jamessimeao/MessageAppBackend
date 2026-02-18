@@ -1,4 +1,4 @@
-using KafkaConsumer.Kafka;
+using MessageRealTime.Kafka;
 using MessageRealTime.Data;
 using MessageRealTime.Kafka.Producer;
 using MessageRealTime.SignalR.Hubs;
