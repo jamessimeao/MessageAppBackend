@@ -1,9 +1,5 @@
 ﻿using MessageREST.Data;
 using MessageREST.Dtos;
-using MessageREST.Kafka.EventTypes;
-using MessageREST.Kafka.Keys;
-using MessageREST.Kafka.Producer;
-using MessageREST.Kafka.Values;
 using MessageREST.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +10,7 @@ namespace MessageREST.Controllers
     [ApiController]
     [Route("[controller]/[action]")]
     [Authorize]
-    public class MessageController(IDataAccess dataAccess, IKafkaProducer kafkaProducer) : ControllerBase
+    public class MessageController(IDataAccess dataAccess) : ControllerBase
     {
         private int maxMessagesQuantity = 50;
 
@@ -111,19 +107,6 @@ namespace MessageREST.Controllers
 
             await dataAccess.EditMessageAsync(editMessageDto.MessageId, editMessageDto.NewContent);
 
-            Key key = new()
-            {
-                EventType = EventType.MESSAGE_UPDATED_EVENT,
-            };
-
-            MessageUpdated value = new()
-            {
-                MessageId = editMessageDto.MessageId,
-                RoomId = roomId,
-            };
-
-            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<MessageUpdated>.Serialize(value));
-
             return Ok();
         }
 
@@ -144,19 +127,6 @@ namespace MessageREST.Controllers
             }
 
             await dataAccess.DeleteMessageAsync(deleteMessageDto.MessageId);
-
-            Key key = new()
-            {
-                EventType = EventType.MESSAGE_UPDATED_EVENT,
-            };
-
-            MessageUpdated value = new()
-            {
-                MessageId = deleteMessageDto.MessageId,
-                RoomId = roomId,
-            };
-
-            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<MessageUpdated>.Serialize(value));
 
             return Ok();
         }
