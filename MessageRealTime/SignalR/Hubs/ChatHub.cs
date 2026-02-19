@@ -21,13 +21,12 @@ namespace MessageRealTime.SignalR.Hubs
         private const string userIdKey = "userId";
         private const string roomsIdsKey = "roomsIds";
 
-        public ChatHub(IConfiguration configuration, IDataAccess dataAccess)//, IKafkaProducer kafkaProducer)
+        public ChatHub(IConfiguration configuration, IDataAccess dataAccess)
         {
             Console.WriteLine("------------------------------------------------------");
             Console.WriteLine("Constructing ChatHub...");
 
             _dataAccess = dataAccess;
-            //_kafkaProducer = kafkaProducer;
         }
 
         public override async Task OnConnectedAsync()
