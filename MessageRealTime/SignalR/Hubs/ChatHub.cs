@@ -15,7 +15,6 @@ namespace MessageRealTime.SignalR.Hubs
     public class ChatHub : Hub<IChatClient>
     {
         private readonly IDataAccess _dataAccess;
-        //private readonly IKafkaProducer _kafkaProducer;
 
         // Keys to be used with Context.Items dictionary
         private const string userIdKey = "userId";
