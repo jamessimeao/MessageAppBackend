@@ -32,6 +32,7 @@ namespace KafkaConsumer.Kafka
                 BootstrapServers = bootstrapServers,
                 GroupId = groupId,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
+                Acks = Acks.All,
             };
 
             consumer = new ConsumerBuilder<string, string>(consumerConfig).Build();
