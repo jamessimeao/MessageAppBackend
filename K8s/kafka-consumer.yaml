@@ -17,13 +17,3 @@ spec:
       containers:
       - name: kafka-consumer
         image: jmstoledo/kafka-consumer:v1
-        volumeMounts:
-        - name: secrets
-          mountPath: /app/secrets
-          readOnly: true
-      volumes:
-      - name: secrets
-        projected:
-          sources:
-          - secret:
-              name: db-settings
