@@ -87,13 +87,14 @@ namespace KafkaConsumer.Kafka
                 throw new Exception("Error: Null key.");
             }
 
+            string serializedValue = consumeResult.Message.Value;
             switch (key.EventType)
             {
                 case EventType.ROOM_CREATED_EVENT:
-                    ProcessRoomCreatedEvent(key, serializedKey);
+                    ProcessRoomCreatedEvent(key, serializedValue);
                     break;
                 case EventType.ROOM_DELETED_EVENT:
-                    ProcessRoomDeletedEvent(key, serializedKey);
+                    ProcessRoomDeletedEvent(key, serializedValue);
                     break;
                 default:
                     Console.WriteLine("Warning: Event not processed.");
