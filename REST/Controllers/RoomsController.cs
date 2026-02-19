@@ -106,6 +106,7 @@ namespace REST.Controllers
         }
 
         //*******************************************************************
+        /*
         [HttpPost]
         public async Task<ActionResult> AddUserToRoomAsync(AddUserToRoomDto addUserToRoomDto)
         {
@@ -130,6 +131,7 @@ namespace REST.Controllers
 
             return Ok();
         }
+        */
 
         [HttpDelete]
         public async Task<ActionResult> RemoveUserFromRoomAsync(RemoveUserFromRoomDto removeUserFromRoomDto)
@@ -141,14 +143,16 @@ namespace REST.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await dataAccess.UserIsARoomAdmin(removeUserFromRoomDto.RoomId, userId.Value);
-            if (!authorized)
+            bool isAdmin = await dataAccess.UserIsARoomAdmin(removeUserFromRoomDto.RoomId, userId.Value);
+            // Get id of user to be removed
+            int userToRemoveId = await dataAccess.GetUserIdFromEmail(removeUserFromRoomDto.UserEmail);
+
+            // User can remove itself. If it is an admin of the room, it can remove anyone.
+            bool canRemoveUser = isAdmin || userId == userToRemoveId;
+            if (!canRemoveUser)
             {
                 return Forbid();
             }
-
-            // Get id of user to be removed
-            int userToRemoveId = await dataAccess.GetUserIdFromEmail(removeUserFromRoomDto.UserEmail);
 
             await dataAccess.RemoveUserFromRoomAsync(removeUserFromRoomDto.RoomId, userToRemoveId);
 
