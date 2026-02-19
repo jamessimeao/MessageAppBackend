@@ -29,6 +29,6 @@ namespace REST.Data
         public Task SetUsersRoleInRoom(int roomId, RoleInRoom roleInRoom);
 
         //*********************** users table **********************************
-        public Task<int> GetUserIdFromEmail(string userEmail);
+        //public Task<int> GetUserIdFromEmail(string userEmail);
     }
 }

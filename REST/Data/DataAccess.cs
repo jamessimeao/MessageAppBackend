@@ -23,9 +23,10 @@ namespace REST.Data
 
         // From Rooms project
         // users table
-        private const string EMAIL_VARIABLE = "email";
+        //private const string EMAIL_VARIABLE = "email";
 
-        private const string GET_USER_ID_FROM_EMAIL_PROCEDURE = "dbo.getUserIdFromEmail";
+        //private const string GET_USER_ID_FROM_EMAIL_PROCEDURE = "dbo.getUserIdFromEmail";
+
         private const string ROOM_HAS_USER_WITH_ROLE_PROCEDURE = "dbo.roomHasUserWithRole";
         private const string SET_USERS_ROLE_IN_ROOM_PROCEDURE = "dbo.setUsersRoleInRoom";
 
@@ -305,6 +306,7 @@ namespace REST.Data
         }
 
         //************************************* users table *********************************************
+        /*
         public async Task<int> GetUserIdFromEmail(string userEmail)
         {
             DynamicParameters parameters = new();
@@ -318,6 +320,6 @@ namespace REST.Data
             );
 
             return userId;
-        }
+        }*/
     }
 }
