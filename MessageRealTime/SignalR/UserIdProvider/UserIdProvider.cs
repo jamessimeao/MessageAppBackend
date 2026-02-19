@@ -8,7 +8,7 @@ namespace MessageRealTime.SignalR.UserIdProvider
         public string? GetUserId(HubConnectionContext connection)
         {
             // Identify the user uniquely by its email
-            return connection.User?.FindFirst(ClaimTypes.Email)?.Value;
+            return connection.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
     }
 }
