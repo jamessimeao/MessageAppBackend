@@ -1,21 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Client
+namespace ConsoleClient.Clients.Auth
 {
-    internal struct Urls
+    internal struct AuthUrls
     {
         // Auth urls
         public readonly string testAuthConnectionUrl;
         public readonly string registerUrl;
         public readonly string loginUrl;
 
-        // Message urls
-        public readonly string chatHubUrl;
-
-        // Rooms urls
-        public readonly string createRoomUrl;
-
-        public Urls(bool productionUrls)
+        public AuthUrls(bool productionUrls)
         {
             Console.WriteLine("Getting urls from configuration...");
             ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
@@ -37,12 +31,8 @@ namespace Client
                                         ?? throw new Exception("Failed to get RegisterUrl");
             loginUrl = configuration.GetValue<string>("LoginUrl")
                                         ?? throw new Exception("Failed to get LoginUrl");
-            chatHubUrl = configuration.GetValue<string>("ChatHubUrl")
-                                        ?? throw new Exception("Failed to get ChatHubUrl");
-            createRoomUrl = configuration.GetValue<string>("CreateRoomUrl")
-                                        ?? throw new Exception("Failed to get CreateRoomUrl");
 
-            Console.WriteLine("Got the urls from configuration successfully");
+            Console.WriteLine("Got the auth urls from configuration successfully.");
         }
     }
 }
