@@ -2,7 +2,7 @@
 {
     public class UserInfoDto
     {
-        public required int UserId { get; set; }
+        public required int Id { get; set; }
         public required string Username { get; set; }
     }
 }
