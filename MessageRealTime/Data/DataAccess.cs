@@ -10,7 +10,7 @@ namespace MessageRealTime.Data
 
         //private const string GET_USER_ROOMS_PROCEDURE = "dbo.getUserRooms";
         private const string GET_USERS_IDS_FROM_ROOM_PROCEDURE = "dbo.getUsersIdsFromRoom";
-        private const string GET_USER_ID_FROM_EMAIL_PROCEDURE = "dbo.getUserIdFromEmail";
+        //private const string GET_USER_ID_FROM_EMAIL_PROCEDURE = "dbo.getUserIdFromEmail";
 
         // Messages table
         private const string ROOMID_VARIABLE = "roomid";
@@ -34,7 +34,7 @@ namespace MessageRealTime.Data
             );
 
             return roomIds;
-        }*/
+        }
 
         public async Task<int> GetUserIdAsync(string userEmail)
         {
@@ -50,6 +50,7 @@ namespace MessageRealTime.Data
 
             return userId;
         }
+        */
 
         public async Task<IEnumerable<int>> GetUsersIdsFromRoom(int roomId)
         {
