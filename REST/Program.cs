@@ -6,6 +6,7 @@ using Scalar.AspNetCore;
 using System.Data;
 using System.Text;
 using REST.Kafka.Producer;
+using REST.Kafka.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -60,6 +61,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     );
 
 builder.Services.AddTransient<IKafkaProducer, KafkaProducer>();
+
+builder.Services.AddSingleton<ISerializer, Serializer>();
 
 var app = builder.Build();
 

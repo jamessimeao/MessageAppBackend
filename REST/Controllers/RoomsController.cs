@@ -15,7 +15,7 @@ namespace REST.Controllers
     [ApiController]
     [Route("[controller]/[action]")]
     [Authorize]
-    public class RoomsController(IDataAccess dataAccess, IKafkaProducer kafkaProducer) : ControllerBase
+    public class RoomsController(IDataAccess dataAccess, IKafkaProducer kafkaProducer, ISerializer serializer) : ControllerBase
     {
         [HttpPost]
         public async Task<ActionResult<int>> CreateRoomAndAddUserToItAsync(CreateRoomDto createRoomDto)

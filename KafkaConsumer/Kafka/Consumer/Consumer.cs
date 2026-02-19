@@ -14,7 +14,9 @@ namespace KafkaConsumer.Kafka
         private const string groupId = "someGroupId";
         private readonly IConsumer<string, string> consumer;
 
-        public Consumer(IConfiguration configuration)
+        private readonly ISerializer _serializer;
+
+        public Consumer(IConfiguration configuration, ISerializer serializer)
         {
             Console.WriteLine("Constructing KafkaConsumer...");
 
@@ -39,6 +41,8 @@ namespace KafkaConsumer.Kafka
 
             consumer = new ConsumerBuilder<string, string>(consumerConfig).Build();
             consumer.Subscribe(topic);
+
+            _serializer = serializer;
         }
 
         public async Task ConsumeMessagesFromKafkaAsync(CancellationToken stoppingToken)
@@ -101,7 +105,7 @@ namespace KafkaConsumer.Kafka
 
         private void ProcessRoomCreatedEvent(Key key, string serializedValue)
         {
-            RoomCreated? value = serializer.Deserialize<RoomCreated>(serializedValue);
+            RoomCreated? value = _serializer.Deserialize<RoomCreated>(serializedValue);
             if(value == null)
             {
                 return;
@@ -113,7 +117,7 @@ namespace KafkaConsumer.Kafka
 
         private void ProcessRoomDeletedEvent(Key key, string serializedValue)
         {
-            RoomDeleted? value = serializer.Deserialize<RoomDeleted>(serializedValue);
+            RoomDeleted? value = _serializer.Deserialize<RoomDeleted>(serializedValue);
             if (value == null)
             {
                 return;

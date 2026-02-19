@@ -1,4 +1,5 @@
 using KafkaConsumer.Kafka;
+using KafkaConsumer.Kafka.Values;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,8 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddSingleton<IKafkaConsumer, KafkaConsumer>();
 // Run the Kafka consumer on the background
 builder.Services.AddHostedService<ConsumerOnBackground>();
+
+builder.Services.AddSingleton<ISerializer, Serializer>();
 
 var app = builder.Build();
 
