@@ -92,7 +92,7 @@ namespace KafkaConsumer.Kafka
                     ProcessRoomDeletedEvent(key, serializedKey);
                     break;
                 default:
-                    Console.WriteLine("Event not processed.");
+                    Console.WriteLine("Warning: Event not processed.");
                     break;
             }
 
