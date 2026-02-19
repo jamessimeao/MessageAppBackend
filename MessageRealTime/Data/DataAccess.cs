@@ -8,7 +8,7 @@ namespace MessageRealTime.Data
         private const string USERID_VARIABLE = "userid";
         private const string EMAIL_VARIABLE = "email";
 
-        private const string GET_USER_ROOMS_PROCEDURE = "dbo.getUserRooms";
+        //private const string GET_USER_ROOMS_PROCEDURE = "dbo.getUserRooms";
         private const string GET_USER_ID_FROM_EMAIL_PROCEDURE = "dbo.getUserIdFromEmail";
 
         // Messages table
@@ -19,6 +19,7 @@ namespace MessageRealTime.Data
 
         private const string SAVE_MESSAGE_PROCEDURE = "dbo.saveMessage";
 
+        /*
         public async Task<IEnumerable<int>> GetRoomsIdsAsync(int userId)
         {
             DynamicParameters parameters = new DynamicParameters();
@@ -32,7 +33,7 @@ namespace MessageRealTime.Data
             );
 
             return roomIds;
-        }
+        }*/
 
         public async Task<int> GetUserIdAsync(string userEmail)
         {
