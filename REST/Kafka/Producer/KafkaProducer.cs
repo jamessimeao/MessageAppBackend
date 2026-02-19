@@ -10,7 +10,7 @@ namespace REST.Kafka.Producer
 
         // Kafka producer
         private readonly IProducer<Key, string> producer; // Create a producer for each connection
-        private readonly TimeSpan flushTimeOut = TimeSpan.FromSeconds(1);
+        //private readonly TimeSpan flushTimeOut = TimeSpan.FromSeconds(1);
 
         public KafkaProducer(IConfiguration configuration)
         {
@@ -65,7 +65,7 @@ namespace REST.Kafka.Producer
                 }
             );
 
-            producer.Flush(flushTimeOut);
+            producer.Flush();
         }
 
         ValueTask IAsyncDisposable.DisposeAsync()
