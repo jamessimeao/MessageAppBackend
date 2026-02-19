@@ -17,7 +17,7 @@ namespace REST.Data
         public Task<int> CreateRoomAsync(string name);
         public Task DeleteRoomAsync(int roomId);
         public Task UpdateRoomNameAsync(int roomId, string name);
-        public Task<string> GetRoomNameAsync(int roomId);
+        public Task<RoomInfoDto> GetRoomInfoAsync(int roomId);
 
         //*********************** usersrooms table *****************************
         public Task AddUserToRoomAsync(int roomId, int userId, RoleInRoom roleInRoom);

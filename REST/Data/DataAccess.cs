@@ -231,18 +231,18 @@ namespace REST.Data
             );
         }
 
-        public async Task<string> GetRoomNameAsync(int roomId)
+        public async Task<RoomInfoDto> GetRoomInfoAsync(int roomId)
         {
             DynamicParameters parameters = new();
             parameters.Add(ROOMID_VARIABLE, roomId);
 
-            string roomName = await connection.QuerySingleAsync<string>
+            RoomInfoDto roomInfo = await connection.QuerySingleAsync<RoomInfoDto>
                                 (
                                     GET_ROOM_NAME_PROCEDURE,
                                     parameters,
                                     commandType: CommandType.StoredProcedure
                                 );
-            return roomName;
+            return roomInfo;
         }
 
         //********************************************** usersrooms table *****************************************

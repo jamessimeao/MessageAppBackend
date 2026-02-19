@@ -225,7 +225,7 @@ namespace REST.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<string>> GetRoomNameAsync(int roomId)
+        public async Task<ActionResult<RoomInfoDto>> GetRoomInfoAsync(int roomId)
         {
             int? userId = Identification.GetUserId(User);
             if(userId == null)
@@ -239,8 +239,8 @@ namespace REST.Controllers
                 return Forbid();
             }
 
-            string roomName = await dataAccess.GetRoomNameAsync(roomId);
-            return Ok(roomName);
+            RoomInfoDto roomInfo = await dataAccess.GetRoomInfoAsync(roomId);
+            return Ok(roomInfo);
         }
 
         [HttpGet]
