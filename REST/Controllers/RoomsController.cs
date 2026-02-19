@@ -136,6 +136,14 @@ namespace REST.Controllers
                 return Ok();
             }
 
+            // Also, if it is not empty, but don't have admins, all users will be turned into admins.
+            // Check if there are admins.
+            bool roomHasAdmins = await dataAccess.RoomHasUserWithRole(removeUserFromRoomDto.RoomId, RoleInRoom.Admin);
+            if(!roomHasAdmins)
+            {
+                await dataAccess.SetUsersRoleInRoom(removeUserFromRoomDto.RoomId, RoleInRoom.Admin);
+                return Ok();
+            }
 
             return Ok();
         }
