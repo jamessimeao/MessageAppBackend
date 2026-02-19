@@ -102,7 +102,7 @@ namespace MessageREST.Controllers
         {
             // Check if user owns the message
             int? userId = await GetUserId(User);
-            if (User == null)
+            if (userId == null)
             {
                 return Unauthorized();
             }
@@ -123,7 +123,7 @@ namespace MessageREST.Controllers
         {
             // Check if user owns the message
             int? userId = await GetUserId(User);
-            if (User == null)
+            if (userId == null)
             {
                 return Unauthorized();
             }
