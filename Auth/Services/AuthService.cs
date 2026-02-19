@@ -26,16 +26,12 @@ namespace JWTAuth.Services
             _dataAccess = dataAccess;
 
             // For token creation
-            string? appSettingsTokenNullable = configuration.GetValue<string>("AppSettings:Token");
-            string? appSettingsIssuerNullable = configuration.GetValue<string>("AppSettings:Issuer");
-            string? appSettingsAudienceNullable = configuration.GetValue<string>("AppSettings:Audience");
-            if (appSettingsTokenNullable == null || appSettingsIssuerNullable == null || appSettingsAudienceNullable == null)
-            {
-                throw new Exception("Failed to get AppSettings token, issuer or audience.");
-            }
-            appSettingsToken = appSettingsTokenNullable;
-            appSettingsIssuer = appSettingsIssuerNullable;
-            appSettingsAudience = appSettingsAudienceNullable;
+            appSettingsToken = configuration.GetValue<string>("AppSettings:Token")
+                                        ?? throw new Exception("Failed to get AppSettings token.");
+            appSettingsIssuer = configuration.GetValue<string>("AppSettings:Issuer")
+                                        ?? throw new Exception("Failed to get AppSettings issuer.");
+            appSettingsAudience = configuration.GetValue<string>("AppSettings:Audience")
+                                        ?? throw new Exception("Failed to get AppSettings audience.");
         }
 
         public async Task<User?> RegisterAsync(UserRegisterDto userRegisterDto)

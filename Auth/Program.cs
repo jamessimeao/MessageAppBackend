@@ -44,16 +44,12 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 
 // Make an authentication schema to be used for refreshing the token.
 // As such, we have to allow the access token to be outdated.
-string? appSettingsTokenNullable = builder.Configuration.GetValue<string>("AppSettings:Token");
-string? appSettingsIssuerNullable = builder.Configuration.GetValue<string>("AppSettings:Issuer");
-string? appSettingsAudienceNullable = builder.Configuration.GetValue<string>("AppSettings:Audience");
-if (appSettingsTokenNullable == null || appSettingsIssuerNullable == null || appSettingsAudienceNullable == null)
-{
-    throw new Exception("Failed to get AppSettings token, issuer or audience.");
-}
-string appSettingsToken = appSettingsTokenNullable;
-string appSettingsIssuer = appSettingsIssuerNullable;
-string appSettingsAudience = appSettingsAudienceNullable;
+string appSettingsToken = builder.Configuration.GetValue<string>("AppSettings:Token")
+                                    ?? throw new Exception("Failed to get AppSettings token.");
+string appSettingsIssuer = builder.Configuration.GetValue<string>("AppSettings:Issuer")
+                                    ?? throw new Exception("Failed to get AppSettings issuer.");
+string appSettingsAudience = builder.Configuration.GetValue<string>("AppSettings:Audience")
+                                    ?? throw new Exception("Failed to get AppSettings audience.");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(
         (JwtBearerOptions options) => options.TokenValidationParameters = new TokenValidationParameters()

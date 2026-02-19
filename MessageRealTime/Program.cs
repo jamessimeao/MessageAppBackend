@@ -28,11 +28,8 @@ if (builder.Environment.IsProduction())
 }
 
 // Dependency injection for database connection, to be used by DataAccess class
-string? connectionString = builder.Configuration.GetConnectionString("Default");
-if (connectionString == null)
-{
-    throw new Exception("Failed to get connection string.");
-}
+string connectionString = builder.Configuration.GetConnectionString("Default")
+                            ?? throw new Exception("Failed to get connection string.");
 
 builder.Services.AddTransient<IDbConnection>
 (
@@ -42,16 +39,12 @@ builder.Services.AddTransient<IDbConnection>
 // Dependency injection for DataAccess class
 builder.Services.AddTransient<IDataAccess, DataAccess>();
 
-string? appSettingsTokenNullable = builder.Configuration.GetValue<string>("AppSettings:Token");
-string? appSettingsIssuerNullable = builder.Configuration.GetValue<string>("AppSettings:Issuer");
-string? appSettingsAudienceNullable = builder.Configuration.GetValue<string>("AppSettings:Audience");
-if (appSettingsTokenNullable == null || appSettingsIssuerNullable == null || appSettingsAudienceNullable == null)
-{
-    throw new Exception("Failed to get AppSettings token, issuer or audience.");
-}
-string appSettingsToken = appSettingsTokenNullable;
-string appSettingsIssuer = appSettingsIssuerNullable;
-string appSettingsAudience = appSettingsAudienceNullable;
+string appSettingsToken = builder.Configuration.GetValue<string>("AppSettings:Token")
+                                    ?? throw new Exception("Failed to get AppSettings token.");
+string appSettingsIssuer = builder.Configuration.GetValue<string>("AppSettings:Issuer")
+                                    ?? throw new Exception("Failed to get AppSettings issuer.");
+string appSettingsAudience = builder.Configuration.GetValue<string>("AppSettings:Audience")
+                                    ?? throw new Exception("Failed to get AppSettings audience.");
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(
         (JwtBearerOptions options) =>
