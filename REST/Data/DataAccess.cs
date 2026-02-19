@@ -118,6 +118,19 @@ namespace REST.Data
             return userIsInRoom;
         }
 
+        public async Task<bool> UserIsARoomAdmin(int roomId, int userId)
+        {
+            // Get the role the user has for the room with given id
+            RoleInRoom? roleInRoom = await GetRoleInRoomForUser(roomId, userId);
+            if (roleInRoom == null || roleInRoom != RoleInRoom.Admin)
+            {
+                // user is not in room
+                return false;
+            }
+
+            return true;
+        }
+
         // rooms table
         private const string ID_VARIABLE = "id";
         private const string NAME_VARIABLE = "name";

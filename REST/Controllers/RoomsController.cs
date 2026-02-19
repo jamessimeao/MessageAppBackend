@@ -16,22 +16,6 @@ namespace REST.Controllers
     [Authorize]
     public class RoomsController(IDataAccess dataAccess, IKafkaProducer kafkaProducer) : ControllerBase
     {
-        //*****************************************************************************
-        private async Task<bool> IsUserAuthorizedToConfigureRoom(int roomId, int userId)
-        {
-            // Get the role the user has for the room with given id
-            RoleInRoom? roleInRoom = await dataAccess.GetRoleInRoomForUser(roomId, userId);
-            if (roleInRoom == null || roleInRoom != RoleInRoom.Admin)
-            {
-                // user is not in room
-                return false;
-            }
-
-            return true;
-        }
-
-        //********************************** Actions ***************************************************************
-
         [HttpPost]
         public async Task<ActionResult<int>> CreateRoomAndAddUserToItAsync(CreateRoomDto createRoomDto)
         {
@@ -76,7 +60,7 @@ namespace REST.Controllers
                 return Unauthorized();
             }
             // First check if the user has authority to delete the room
-            bool authorized = await IsUserAuthorizedToConfigureRoom(deleteRoomDto.RoomId, userId.Value);
+            bool authorized = await dataAccess.UserIsARoomAdmin(deleteRoomDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
@@ -110,7 +94,7 @@ namespace REST.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await IsUserAuthorizedToConfigureRoom(updateRoomNameDto.RoomId, userId.Value);
+            bool authorized = await dataAccess.UserIsARoomAdmin(updateRoomNameDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
@@ -133,7 +117,7 @@ namespace REST.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await IsUserAuthorizedToConfigureRoom(addUserToRoomDto.RoomId, userId.Value);
+            bool authorized = await dataAccess.UserIsARoomAdmin(addUserToRoomDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
@@ -157,7 +141,7 @@ namespace REST.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await IsUserAuthorizedToConfigureRoom(removeUserFromRoomDto.RoomId, userId.Value);
+            bool authorized = await dataAccess.UserIsARoomAdmin(removeUserFromRoomDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();
@@ -181,7 +165,7 @@ namespace REST.Controllers
                 return Unauthorized();
             }
 
-            bool authorized = await IsUserAuthorizedToConfigureRoom(updateUserRoleInRoomDto.RoomId, userId.Value);
+            bool authorized = await dataAccess.UserIsARoomAdmin(updateUserRoleInRoomDto.RoomId, userId.Value);
             if (!authorized)
             {
                 return Forbid();

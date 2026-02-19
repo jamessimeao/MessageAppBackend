@@ -11,6 +11,7 @@ namespace REST.Data
         public Task DeleteMessageAsync(int messageId);
         public Task<bool> UserOwnsMessage(int userId, int messageId);
         public Task<bool> UserIsInRoom(int roomId, int userId);
+        public Task<bool> UserIsARoomAdmin(int roomId, int userId);
 
         //*********************** rooms table **********************************
         public Task<int> CreateRoomAsync(string name);
