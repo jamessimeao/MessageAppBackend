@@ -7,7 +7,7 @@ using REST.Kafka.Keys;
 using REST.Kafka.Producer;
 using REST.Kafka.Values;
 using REST.Roles;
-using System.Security.Claims;
+using REST.Utils;
 
 namespace REST.Controllers
 {
@@ -17,25 +17,6 @@ namespace REST.Controllers
     public class RoomsController(IDataAccess dataAccess, IKafkaProducer kafkaProducer) : ControllerBase
     {
         //*****************************************************************************
-        private async Task<int?> GetUserId(ClaimsPrincipal user)
-        {
-            string? idString = user.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (idString == null)
-            {
-                return null;
-            }
-            int id;
-            bool parsed = Int32.TryParse(idString, out id);
-            if (parsed)
-            {
-                return id;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         private async Task<bool> IsUserAuthorizedToConfigureRoom(int roomId, int userId)
         {
             // Get the role the user has for the room with given id
@@ -58,7 +39,7 @@ namespace REST.Controllers
             int roomId = await dataAccess.CreateRoomAsync(createRoomDto.Name);
 
             // Get the user id
-            int? userId = await GetUserId(User);
+            int? userId = Identification.GetUserId(User);
             if (userId == null)
             {
                 return Unauthorized();
@@ -89,7 +70,7 @@ namespace REST.Controllers
         public async Task<ActionResult> DeleteRoomAsync(DeleteRoomDto deleteRoomDto)
         {
             // Get the user id
-            int? userId = await GetUserId(User);
+            int? userId = Identification.GetUserId(User);
             if (userId == null)
             {
                 return Unauthorized();
@@ -123,7 +104,7 @@ namespace REST.Controllers
         public async Task<ActionResult> UpdateRoomNameAsync(UpdateRoomNameDto updateRoomNameDto)
         {
             // First check if the user has authority to update the room
-            int? userId = await GetUserId(User);
+            int? userId = Identification.GetUserId(User);
             if (userId == null)
             {
                 return Unauthorized();
@@ -146,7 +127,7 @@ namespace REST.Controllers
         {
             // First check if the user that is adding the other one to the room
             // has authority to do it.
-            int? userId = await GetUserId(User);
+            int? userId = Identification.GetUserId(User);
             if (userId == null)
             {
                 return Unauthorized();
@@ -170,7 +151,7 @@ namespace REST.Controllers
         public async Task<ActionResult> RemoveUserFromRoomAsync(RemoveUserFromRoomDto removeUserFromRoomDto)
         {
             // First check if the user has authority to do it.
-            int? userId = await GetUserId(User);
+            int? userId = Identification.GetUserId(User);
             if (userId == null)
             {
                 return Unauthorized();
@@ -194,7 +175,7 @@ namespace REST.Controllers
         public async Task<ActionResult> UpdateUserRoleInRoom(UpdateUserRoleInRoomDto updateUserRoleInRoomDto)
         {
             // First check if the user has authority to do it.
-            int? userId = await GetUserId(User);
+            int? userId = Identification.GetUserId(User);
             if (userId == null)
             {
                 return Unauthorized();
