@@ -38,14 +38,14 @@ namespace REST.Kafka.Producer
                         .Build();
         }
 
-        public async Task ProduceToKafkaAsync(Key key, string value)
+        public async Task ProduceToKafkaAsync(Key key, string serializedValue)
         {
             Console.WriteLine("KafkaProducer sending message to Kafka...");
 
             Message<Key, string> kafkaMessage = new()
             {
                 Key = key,
-                Value = value,
+                Value = serializedValue,
             };
 
             producer.Produce
