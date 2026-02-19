@@ -134,11 +134,6 @@ namespace MessageRealTime.SignalR.Hubs
             return true;
         }
 
-        private string GroupName(int roomId)
-        {
-            return Convert.ToString(roomId);
-        }
-
         private bool UserIsInRoom(int roomId)
         {
             IEnumerable<int> roomsIds;
