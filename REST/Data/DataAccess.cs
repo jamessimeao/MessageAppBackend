@@ -179,6 +179,7 @@ namespace REST.Data
         private const string REMOVE_USER_FROM_ROOM = "dbo.removeUserFromRoom";
         private const string UPDATE_USER_ROLE_IN_ROOM_PROCEDURE = "dbo.updateUserRoleInRoom";
         private const string GET_ROLE_IN_ROOM_FOR_USER_PROCEDURE = "dbo.getRoleInRoomForUser";
+        private const string GET_ROOM_NAME_PROCEDURE = "dbo.getRoomName";
 
         // users table
         //private const string EMAIL_VARIABLE = "email";
@@ -226,6 +227,20 @@ namespace REST.Data
                 parameters,
                 commandType: CommandType.StoredProcedure
             );
+        }
+
+        public async Task<string> GetRoomNameAsync(int roomId)
+        {
+            DynamicParameters parameters = new();
+            parameters.Add(ROOMID_VARIABLE, roomId);
+
+            string roomName = await connection.QuerySingleAsync<string>
+                                (
+                                    GET_ROOM_NAME_PROCEDURE,
+                                    parameters,
+                                    commandType: CommandType.StoredProcedure
+                                );
+            return roomName;
         }
 
         //********************************************** usersrooms table *****************************************
