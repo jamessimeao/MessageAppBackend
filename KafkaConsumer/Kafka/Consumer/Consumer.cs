@@ -101,7 +101,7 @@ namespace KafkaConsumer.Kafka
 
         private void ProcessRoomCreatedEvent(Key key, string serializedValue)
         {
-            RoomCreated? value = Serializer<RoomCreated>.Deserialize(serializedValue);
+            RoomCreated? value = serializer.Deserialize<RoomCreated>(serializedValue);
             if(value == null)
             {
                 return;
@@ -113,7 +113,7 @@ namespace KafkaConsumer.Kafka
 
         private void ProcessRoomDeletedEvent(Key key, string serializedValue)
         {
-            RoomDeleted? value = Serializer<RoomDeleted>.Deserialize(serializedValue);
+            RoomDeleted? value = serializer.Deserialize<RoomDeleted>(serializedValue);
             if (value == null)
             {
                 return;

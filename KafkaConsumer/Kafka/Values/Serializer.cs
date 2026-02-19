@@ -2,16 +2,23 @@
 
 namespace KafkaConsumer.Kafka.Values
 {
-    public static class Serializer<T>
+    public class Serializer
     {
-        public static string Serialize(T value)
+        private static JsonSerializerOptions options = new();
+
+        public Serializer()
+        {
+            options.PropertyNameCaseInsensitive = true;
+        }
+
+        public string Serialize<T>(T value)
         {
             return JsonSerializer.Serialize(value);
         }
 
-        public static T? Deserialize(string value)
+        public T? Deserialize<T>(string value)
         {
-            return JsonSerializer.Deserialize<T>(value);
+            return JsonSerializer.Deserialize<T>(value, options);
         }
     }
 }

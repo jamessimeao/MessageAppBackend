@@ -46,7 +46,7 @@ namespace REST.Controllers
             };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<RoomCreated>.Serialize(value));
+            await kafkaProducer.ProduceToKafkaAsync(key, serializer.Serialize<RoomCreated>(value));
             
             return Ok(roomId);
         }
@@ -80,7 +80,7 @@ namespace REST.Controllers
             };
 
             // Produce an event
-            await kafkaProducer.ProduceToKafkaAsync(key, Serializer<RoomDeleted>.Serialize(value));
+            await kafkaProducer.ProduceToKafkaAsync(key, serializer.Serialize<RoomDeleted>(value));
 
             return Ok();
         }
