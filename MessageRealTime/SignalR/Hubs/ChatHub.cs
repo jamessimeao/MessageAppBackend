@@ -94,8 +94,11 @@ namespace MessageRealTime.SignalR.Hubs
             // Get the users from the room without the sender
             IEnumerable<int> usersIdsExceptSender = usersIds.Except([senderId]);
 
+            // Convert int to string
+            IEnumerable<string> usersIdsToSend = usersIdsExceptSender.Select(id => id.ToString());
+
             // Send message to all users in room except itself
-            await Clients.Users(userIdsExceptItself).ReceiveMessageAsync(receiveMessageDto);
+            await Clients.Users(usersIdsToSend).ReceiveMessageAsync(receiveMessageDto);
         }
 
         private async Task<bool> GetUserId()
