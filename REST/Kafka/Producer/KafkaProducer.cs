@@ -56,7 +56,7 @@ namespace REST.Kafka.Producer
                 {
                     if(deliveryReport.Error != ErrorCode.NoError)
                     {
-                        Console.WriteLine($"Failed to send message: {deliveryReport.Error.Reason}");
+                        Console.WriteLine($"Error: Failed to send message: {deliveryReport.Error.Reason}");
                     }
                     else
                     {
