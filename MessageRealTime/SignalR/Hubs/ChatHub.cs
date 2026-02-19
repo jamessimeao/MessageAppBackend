@@ -153,33 +153,5 @@ namespace MessageRealTime.SignalR.Hubs
 
             return true;
         }
-
-        private async Task AddToGroupsAsync()
-        {
-            object? valueUserId;
-            bool hasValueUserId = Context.Items.TryGetValue(userIdKey, out valueUserId);
-            if (!hasValueUserId || valueUserId == null)
-            {
-                Console.WriteLine("Error: Null user id in Context.Items");
-                return;
-            }
-            int userId = (int)valueUserId;
-
-            // Get from the database which groups the user is in.
-            Console.WriteLine("ChatHub adding user to its groups...");
-            IEnumerable<int> roomsIds = await _dataAccess.GetRoomsIdsAsync(userId);
-            // Since the Hub is transient, I can't store the rooms in the class,
-            // but I can store it in Context.Items.
-            Context.Items.Add(roomsIdsKey, roomsIds);
-
-            // Add to corresponding groups in SignalR.
-            List<Task> tasks = new List<Task>();
-            foreach (int roomId in roomsIds)
-            {
-                string groupName = GroupName(roomId);
-                tasks.Add(Groups.AddToGroupAsync(Context.ConnectionId, groupName));
-            }
-            await Task.WhenAll(tasks);
-        }
     }
 }
