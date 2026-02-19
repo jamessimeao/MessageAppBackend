@@ -132,6 +132,33 @@ namespace REST.Controllers
             return Ok(token);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> JoinRoomAsync(string token)
+        {
+            int? userId = Identification.GetUserId(User);
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            // Temporary solution !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            GenerateInvitationTokenDto? decoded = JsonSerializer.Deserialize<GenerateInvitationTokenDto>(token);
+            if (decoded == null)
+            {
+                Console.WriteLine("Failed to decode token.");
+                return BadRequest();
+            }
+           
+            // Validate token
+            if (userId.Value != decoded.UserId)
+            {
+                return Forbid();
+            }
+
+            await dataAccess.AddUserToRoomAsync(decoded.RoomId, decoded.UserId, RoleInRoom.Regular);
+
+            return Ok();
+        }
 
         [HttpDelete]
         public async Task<ActionResult> RemoveUserFromRoomAsync(RemoveUserFromRoomDto removeUserFromRoomDto)
