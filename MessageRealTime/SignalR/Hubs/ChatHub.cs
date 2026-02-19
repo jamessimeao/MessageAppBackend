@@ -52,12 +52,7 @@ namespace MessageRealTime.SignalR.Hubs
 
         public async Task SendMessageAsync(SendMessageDto sendMessageDto)
         {
-            if (!UserIsInRoom(sendMessageDto.RoomId))
-            {
-                Console.WriteLine("Error: User trying to send message to room it is not in.");
-                return;
-            }
-
+            // Get the user id from Context.Items
             object? valueUserId;
             bool hasValueUserId = Context.Items.TryGetValue(userIdKey, out valueUserId);
             if (!hasValueUserId || valueUserId == null)
@@ -66,6 +61,14 @@ namespace MessageRealTime.SignalR.Hubs
                 return;
             }
             int senderId = (int)valueUserId;
+
+            // Get all users from the room
+            IEnumerable<int> usersIds = await _dataAccess.GetUsersIdsFromRoom(sendMessageDto.RoomId);
+            if(!usersIds.Contains(senderId))
+            {
+                Console.WriteLine("User can't send a message to a room it is not in.");
+                return;
+            }
 
             // First save the message in the database, from which the message gets an id.
             // This id will be sent to the client as part of the message.
