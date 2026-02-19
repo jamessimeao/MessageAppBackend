@@ -5,10 +5,11 @@ namespace MessageRealTime.Data
 {
     public class DataAccess(IDbConnection connection) : IDataAccess
     {
-        private const string USERID_VARIABLE = "userid";
+        //private const string USERID_VARIABLE = "userid";
         private const string EMAIL_VARIABLE = "email";
 
         //private const string GET_USER_ROOMS_PROCEDURE = "dbo.getUserRooms";
+        private const string GET_USERS_IDS_FROM_ROOM_PROCEDURE = "dbo.getUsersIdsFromRoom";
         private const string GET_USER_ID_FROM_EMAIL_PROCEDURE = "dbo.getUserIdFromEmail";
 
         // Messages table
@@ -48,6 +49,21 @@ namespace MessageRealTime.Data
             );
 
             return userId;
+        }
+
+        public async Task<IEnumerable<int>> GetUsersIdsFromRoom(int roomId)
+        {
+            DynamicParameters parameters = new();
+            parameters.Add(ROOMID_VARIABLE, roomId);
+
+            IEnumerable<int> usersIds = await connection.QueryAsync<int>
+            (
+                GET_USERS_IDS_FROM_ROOM_PROCEDURE,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
+
+            return usersIds;
         }
 
         public async Task<int> SaveMessageAsync(int roomId, int senderId, string content, DateTime time)
