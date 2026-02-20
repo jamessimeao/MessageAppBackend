@@ -30,6 +30,11 @@ namespace ConsoleClient
             await RegisterRandomUsers(authClient);
             PrintRegisteredUsers();
 
+            // Login each user
+            await LoginUsers(authClient);
+
+
+
         }
 
         private async Task<bool> TryToRegisterARandomUserAsync(AuthClient authClient, int index)
@@ -85,6 +90,29 @@ namespace ConsoleClient
                 Console.WriteLine($"Email = {userRegisterDtos[i].Email}");
                 Console.WriteLine($"Username = {userRegisterDtos[i].Username}");
                 Console.WriteLine($"Password = {userRegisterDtos[i].Password}");
+            }
+        }
+
+        private async Task LoginUsers(AuthClient authClient)
+        {
+            TokenDto? token = null;
+            for (int i = 0; i < _usersQuantity; i++)
+            {
+                while(token == null)
+                {
+                    UserLoginDto userLoginDto = new()
+                    {
+                        Email = userRegisterDtos[i].Email,
+                        Password = userRegisterDtos[i].Password,
+                    };
+                    token = await authClient.LoginAsync(userLoginDto);
+                    if(token != null)
+                    {
+                        // Clone the token
+                        tokens[i].AccessToken = token.AccessToken;
+                        tokens[i].RefreshToken = token.RefreshToken;
+                    }
+                }
             }
         }
 
