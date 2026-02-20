@@ -25,7 +25,7 @@ namespace ConsoleClient.Clients.REST
             Console.WriteLine("Finished constructing REST client.");
         }
 
-        private async Task<HttpResponseMessage> RequestWithJsonAsync(
+        public async Task<HttpResponseMessage> RequestWithJsonAsync(
             TokenDto token,
             HttpMethod method,
             Service service,
