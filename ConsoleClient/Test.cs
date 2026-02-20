@@ -2,6 +2,7 @@
 using ConsoleClient.Clients.REST;
 using ConsoleClient.Clients.Urls;
 using JWTAuth.Dtos;
+using REST.Dtos.Rooms;
 
 namespace ConsoleClient
 {
@@ -14,7 +15,7 @@ namespace ConsoleClient
         private Random random = new Random();
         private const string ALPHNUM = "ABCEDFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private const string SYMB = @"&%-/\*#$";
-        private const string roomName = "original name";
+        private const string originalRoomName = "original name";
 
         private const int DELAY_MILLISECS = 500;
 
@@ -42,7 +43,11 @@ namespace ConsoleClient
             await LoginUsers(authClient);
 
             // Create a room for the first user
-            int roomId = await restClient.CreateRoomAndAddUserToItAsync(tokens[0], roomName);
+            CreateRoomDto createRoomDto = new()
+            {
+                Name = originalRoomName 
+            };
+            int roomId = await restClient.CreateRoomAndAddUserToItAsync(tokens[0], createRoomDto);
 
             // Invite the other users to the room
 
