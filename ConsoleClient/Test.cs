@@ -100,10 +100,10 @@ namespace ConsoleClient
 
         private async Task LoginUsers(AuthClient authClient)
         {
-            TokenDto? token = null;
             for (int i = 0; i < _usersQuantity; i++)
             {
-                while(token == null)
+                TokenDto? token = null;
+                while (token == null)
                 {
                     UserLoginDto userLoginDto = new()
                     {
