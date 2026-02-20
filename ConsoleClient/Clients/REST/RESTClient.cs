@@ -46,6 +46,31 @@ namespace ConsoleClient.Clients.REST
             throw new Exception($"Error: Failed to create room:\n{content}");
         }
 
+        public async Task RenameRoom(TokenDto token, string name)
+        {
+            Console.WriteLine("Trying to rename room...");
+            HttpClient httpClient = new();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
+
+            string serializedJson = JsonSerializer.Serialize(new { Name = name });
+            Console.WriteLine($"json to post {serializedJson}");
+            using StringContent jsonContent = new StringContent(serializedJson, Encoding.UTF8, "application/json");
+
+            string url = _url.FromControllerAction(
+                Service.REST,
+                Controller.Rooms,
+                RoomsAction.UpdateRoomName.ToString());
+            HttpResponseMessage responseMessage = await httpClient.PutAsync(url, jsonContent);
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Room renamed successfully.");
+                return;
+            }
+            else
+            {
+                string content = await responseMessage.Content.ReadAsStringAsync();
+                throw new Exception($"Error: Failed to rename room:\n{content}"); 
+            }
         }
     }
 }
