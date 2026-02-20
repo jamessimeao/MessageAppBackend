@@ -119,10 +119,28 @@ namespace ConsoleClient.Clients.REST
             }
         }
 
+        public async Task<string> GenerateInvitationTokenAsync(TokenDto token, GenerateInvitationTokenDto generateInvitationTokenDto)
+        {
+            Console.WriteLine("Trying to generate invitation...");
+
+            HttpResponseMessage responseMessage = await RequestWithJsonAsync(
+                token,
+                HttpMethod.Post,
+                Service.REST,
+                Controller.Rooms,
+                RoomsAction.GenerateInvitationToken.ToString(),
+                generateInvitationTokenDto);
+
+            if (responseMessage.IsSuccessStatusCode)
             {
                 string content = await responseMessage.Content.ReadAsStringAsync();
-                throw new Exception($"Error: Failed to rename room:\n{content}"); 
+                return content;
+            }
+            else
+            {
+                throw new Exception($"Error: Failed to generate invitation. Status code: {responseMessage.StatusCode}.");
             }
         }
+
     }
 }
