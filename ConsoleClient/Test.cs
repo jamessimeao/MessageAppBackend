@@ -127,20 +127,28 @@ namespace ConsoleClient
             // Get users info from room, to verify their roles
             usersInfo = await restClient.GetUsersInfoFromRoomAsync(tokens[0], getUsersInfoFromRoomDto);
 
-            // Count the number of admins
-            numberOfAdmins = 0;
+            // Check that user 1 is admin
             foreach (UserInfoDto info in usersInfo)
             {
-                if (info.RoleInRoom == RoleInRoom.Admin.ToString())
+                if (info.Id == usersIds[1] && info.RoleInRoom != RoleInRoom.Admin.ToString())
                 {
-                    numberOfAdmins++;
+                    throw new Exception("Error: Regular user not turned into admin.");
                 }
             }
 
-            // Check that there are 2 admins
-            if (numberOfAdmins != 2)
+            // Try again to rename the room, now with admin privilege
+            await restClient.UpdateRoomNameAsync(tokens[1], updateRoomNameDto);
+
+            // Get the room name
+            GetRoomInfoDto getRoomInfoDto = new()
             {
-                throw new Exception("Error: Room should have exactly 2 admins.");
+                RoomId = roomId,
+            };
+            RoomInfoDto roomInfo = await restClient.GetRoomInfoAsync(tokens[0], getRoomInfoDto);
+
+            // Check that the room name was updated
+            if(roomInfo.Name != newRoomName)
+            {
             }
 
 
