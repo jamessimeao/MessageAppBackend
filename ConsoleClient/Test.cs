@@ -12,7 +12,7 @@ namespace ConsoleClient
 {
     internal class Test
     {
-        private readonly int _usersQuantity = 3;
+        private readonly int _usersQuantity = 4;
         private readonly Url url;
         private UserRegisterDto[] userRegisterDtos;
         private TokenDto[] tokens;
