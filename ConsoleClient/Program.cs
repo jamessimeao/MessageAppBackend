@@ -1,19 +1,12 @@
-﻿using JWTAuth.Dtos;
-
-namespace Client
+﻿namespace ConsoleClient
 {
     internal class Program
     {
         public static async Task Main()
         {
             bool productionUrls = false;
-
-            UserRegisterDto userRegisterDto = new UserRegisterDto()
-            {
-                Email = "john@hotmail.com",
-                Password = "john123",
-                Username = "John",
-            };
+            const int usersQuantity = 3;
+            Test test = new(productionUrls, usersQuantity);
         }
     }
 }
