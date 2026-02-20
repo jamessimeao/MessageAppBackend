@@ -1,6 +1,7 @@
 ﻿using ConsoleClient.Clients.Auth;
 using ConsoleClient.Clients.REST;
 using ConsoleClient.Clients.Urls;
+using ConsoleClient.Enums;
 using JWTAuth.Dtos;
 using REST.Dtos.Rooms;
 using REST.Roles;
