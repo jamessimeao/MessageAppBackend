@@ -68,7 +68,7 @@ namespace ConsoleClient
         private async Task RegisterRandomUsers(AuthClient authClient)
         {
             // Keep trying to register new users
-            Console.WriteLine("Trying to register new users...");
+            Console.WriteLine("\nTrying to register new users...");
             int i = 0;
             bool registered;
             int count = 0;
@@ -91,7 +91,7 @@ namespace ConsoleClient
             Console.WriteLine("Users registered:");
             for (int i = 0; i < _usersQuantity; i++)
             {
-                Console.WriteLine(i);
+                Console.WriteLine($"\n{i}");
                 Console.WriteLine($"Email = {userRegisterDtos[i].Email}");
                 Console.WriteLine($"Username = {userRegisterDtos[i].Username}");
                 Console.WriteLine($"Password = {userRegisterDtos[i].Password}");
@@ -100,6 +100,7 @@ namespace ConsoleClient
 
         private async Task LoginUsers(AuthClient authClient)
         {
+            Console.WriteLine("\nLogin users...");
             for (int i = 0; i < _usersQuantity; i++)
             {
                 TokenDto? token = null;
@@ -123,10 +124,12 @@ namespace ConsoleClient
                     await Task.Delay(DELAY_MILLISECS);
                 }
             }
+            Console.WriteLine("Finished login users.");
         }
 
         private async Task DeleteUsers(AuthClient authClient)
         {
+            Console.WriteLine("\nDeleting users...");
             bool succeded = false;
             for (int i = 0; i < _usersQuantity; i++)
             {
@@ -136,6 +139,7 @@ namespace ConsoleClient
                     await Task.Delay(DELAY_MILLISECS);
                 }
             }
+            Console.WriteLine("Finished deleting users.");
         }
     }
 }

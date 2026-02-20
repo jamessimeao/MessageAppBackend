@@ -100,10 +100,12 @@ namespace ConsoleClient.Clients.Auth
             HttpResponseMessage response = await httpClient.DeleteAsync(urls.deleteUrl);
             if (response.IsSuccessStatusCode)
             {
+                Console.WriteLine("Delete a user.");
                 return true;
             }
             else
             {
+                Console.WriteLine($"Error: Failed to delete. Status code = {response.StatusCode}");
                 return false;
             }
         }
