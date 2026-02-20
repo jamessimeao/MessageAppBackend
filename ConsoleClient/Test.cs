@@ -126,7 +126,7 @@ namespace ConsoleClient
                 }
             }
 
-            // Check that there is only one admin
+            // Check that there are 2 admins
             if (numberOfAdmins != 2)
             {
                 throw new Exception("Room should have exactly 2 admins.");
