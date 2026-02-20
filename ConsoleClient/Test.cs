@@ -11,6 +11,9 @@ namespace ConsoleClient
         {
             _productionUrls = productionUrls;
             _usersQuantity = usersQuantity;
+        public async Task ExecuteAsync()
+        {
+        }
         }
     }
 }

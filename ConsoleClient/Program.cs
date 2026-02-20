@@ -7,6 +7,7 @@
             bool productionUrls = false;
             const int usersQuantity = 3;
             Test test = new(productionUrls, usersQuantity);
+            await test.ExecuteAsync();
         }
     }
 }
