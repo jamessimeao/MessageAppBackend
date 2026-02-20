@@ -132,7 +132,7 @@ namespace REST.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> JoinRoomAsync(string token)
+        public async Task<ActionResult> JoinRoomAsync(JoinRoomDto joinRoomDto)
         {
             int? userId = Identification.GetUserId(User);
             if (userId == null)
@@ -141,7 +141,7 @@ namespace REST.Controllers
             }
 
             // Temporary solution !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            GenerateInvitationTokenDto? decoded = JsonSerializer.Deserialize<GenerateInvitationTokenDto>(token);
+            GenerateInvitationTokenDto? decoded = JsonSerializer.Deserialize<GenerateInvitationTokenDto>(joinRoomDto.InvitationToken);
             if (decoded == null)
             {
                 Console.WriteLine("Failed to decode token.");
