@@ -96,10 +96,7 @@ namespace ConsoleClient
             }
 
             {
-            // If we got a Regular user, its id must be >= 1
-            if(regularUserId <= 0)
             {
-                throw new Exception("Error: Room doesn't have a regular user.");
             }
 
             // Turn the regular user into an admin
