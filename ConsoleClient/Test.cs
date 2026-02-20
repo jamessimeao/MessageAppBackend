@@ -113,6 +113,27 @@ namespace ConsoleClient
             };
             await restClient.UpdateUserRoleInRoomAsync(tokens[0], updateUserRoleInRoomDto);
 
+            // Get users info from room, to verify their roles
+            usersInfo = await restClient.GetUsersInfoFromRoomAsync(tokens[0], getUsersInfoFromRoomDto);
+
+            // Count the number of admins
+            numberOfAdmins = 0;
+            foreach (UserInfoDto info in usersInfo)
+            {
+                if (info.RoleInRoom == RoleInRoom.Admin.ToString())
+                {
+                    numberOfAdmins++;
+                }
+            }
+
+            // Check that there is only one admin
+            if (numberOfAdmins != 2)
+            {
+                throw new Exception("Room should have exactly 2 admins.");
+            }
+
+
+
 
             // Delete the room
             DeleteRoomDto deleteRoomDto = new()
