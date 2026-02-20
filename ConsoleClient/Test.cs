@@ -111,8 +111,11 @@ namespace ConsoleClient
                     if(token != null)
                     {
                         // Clone the token
-                        tokens[i].AccessToken = token.AccessToken;
-                        tokens[i].RefreshToken = token.RefreshToken;
+                        tokens[i] = new TokenDto()
+                        {
+                            AccessToken = token.AccessToken,
+                            RefreshToken = token.RefreshToken,
+                        };
                     }
                 }
             }
