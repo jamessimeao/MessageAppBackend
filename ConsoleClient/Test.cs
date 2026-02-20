@@ -149,6 +149,7 @@ namespace ConsoleClient
             // Check that the room name was updated
             if(roomInfo.Name != newRoomName)
             {
+                throw new Exception("Error: Room name not updated.");
             }
 
 
