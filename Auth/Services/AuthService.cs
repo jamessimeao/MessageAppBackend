@@ -204,5 +204,10 @@ namespace JWTAuth.Services
             };
             return newToken;
         }
+
+        public async Task DeleteAsync(int userId)
+        {
+            await _dataAccess.DeleteUserAsync(userId); ;
+        }
     }
 }

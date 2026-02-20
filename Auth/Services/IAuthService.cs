@@ -9,5 +9,6 @@ namespace JWTAuth.Services
         public Task<User?> RegisterAsync(UserRegisterDto userRegisterDto);
         public Task<TokenDto?> LoginAsync(UserLoginDto userLoginDto);
         public Task<TokenDto?> RefreshAccessTokenAsync(int userId, string refreshToken);
+        public Task DeleteAsync(int userId);
     }
 }

@@ -24,6 +24,7 @@ namespace JWTAuth.Data
         private const string GET_USER_FROM_EMAIL_PROCEDURE = "dbo.getUserFromEmail";
         private const string SAVE_REFRESH_TOKEN_PROCEDURE = "dbo.saveRefreshToken";
         private const string GET_REFRESH_TOKEN_DATA_PROCEDURE = "dbo.getRefreshTokenData";
+        private const string DELETE_USER_PROCEDURE = "dbo.deleteUser";
 
         public async Task RegisterUserAsync(User user)
         {
@@ -120,6 +121,19 @@ namespace JWTAuth.Data
             );
 
             return refreshTokenData;
+        }
+
+        public async Task DeleteUserAsync(int userId)
+        {
+            DynamicParameters parameters = new();
+            parameters.Add(ID_VARIABLE, userId);
+
+            await dbConnection.ExecuteAsync
+            (
+                DELETE_USER_PROCEDURE,
+                parameters,
+                commandType: CommandType.StoredProcedure
+            );
         }
     }
 }

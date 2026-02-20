@@ -11,5 +11,6 @@ namespace JWTAuth.Data
         public Task<User?> GetUserFromEmailAsync(string userEmail);
         public Task SaveRefreshTokenAsync(int userId, RefreshTokenData refreshTokenData);
         public Task<RefreshTokenData?> GetRefreshTokenDataAsync(int userId);
+        public Task DeleteUserAsync(int userId);
     }
 }
