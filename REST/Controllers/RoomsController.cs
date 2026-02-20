@@ -201,7 +201,7 @@ namespace REST.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateUserRoleInRoom(UpdateUserRoleInRoomDto updateUserRoleInRoomDto)
+        public async Task<ActionResult> UpdateUserRoleInRoomAsync(UpdateUserRoleInRoomDto updateUserRoleInRoomDto)
         {
             // First check if the user has authority to do it.
             int? userId = Identification.GetUserId(User);
@@ -246,7 +246,7 @@ namespace REST.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserInfoDto>>> GetUsersInfoFromRoom(int roomId)
+        public async Task<ActionResult<IEnumerable<UserInfoDto>>> GetUsersInfoFromRoomAsync(int roomId)
         {
             int? userId = Identification.GetUserId(User);
             if (userId == null)
