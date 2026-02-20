@@ -139,9 +139,9 @@ namespace ConsoleClient
         private async Task DeleteUsers(AuthClient authClient)
         {
             Console.WriteLine("\nDeleting users...");
-            bool succeded = false;
             for (int i = 0; i < _usersQuantity; i++)
             {
+                bool succeded = false;
                 while (!succeded)
                 {
                     succeded = await authClient.DeleteUserAsync(tokens[i]);
