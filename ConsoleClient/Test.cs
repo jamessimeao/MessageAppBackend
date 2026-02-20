@@ -13,6 +13,8 @@ namespace ConsoleClient
         private const string ALPHNUM = "ABCEDFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private const string SYMB = @"&%-/\*#$";
 
+        private const int DELAY_MILLISECS = 500;
+
         public Test(bool productionUrls, int usersQuantity)
         {
             _productionUrls = productionUrls;
@@ -79,6 +81,7 @@ namespace ConsoleClient
                     i++;
                 }
                 count++;
+                await Task.Delay(DELAY_MILLISECS);
             }
             Console.WriteLine("Finished registering users.");
         }
@@ -117,6 +120,7 @@ namespace ConsoleClient
                             RefreshToken = token.RefreshToken,
                         };
                     }
+                    await Task.Delay(DELAY_MILLISECS);
                 }
             }
         }
@@ -129,6 +133,7 @@ namespace ConsoleClient
                 while (!succeded)
                 {
                     succeded = await authClient.DeleteUserAsync(tokens[i]);
+                    await Task.Delay(DELAY_MILLISECS);
                 }
             }
         }
