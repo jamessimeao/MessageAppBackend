@@ -77,12 +77,18 @@ namespace ConsoleClient
             IEnumerable<UserInfoDto> usersInfo = await restClient.GetUsersInfoFromRoomAsync(tokens[1], getUsersInfoFromRoomDto);
 
             // Count the number of admins
+            // Also get a Regular user
             int numberOfAdmins = 0;
-            foreach (UserInfoDto info in  usersInfo)
+            int regularUserId = -1; // something <= 0, because an id must be >= 1
+            foreach (UserInfoDto info in usersInfo)
             {
-                if(info.RoleInRoom == RoleInRoom.Admin.ToString())
+                if (info.RoleInRoom == RoleInRoom.Admin.ToString())
                 {
                     numberOfAdmins++;
+                }
+                else if (info.RoleInRoom == RoleInRoom.Regular.ToString())
+                {
+                    regularUserId = info.Id;
                 }
             }
 
