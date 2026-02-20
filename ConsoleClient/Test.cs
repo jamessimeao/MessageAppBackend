@@ -82,19 +82,16 @@ namespace ConsoleClient
             };
             IEnumerable<UserInfoDto> usersInfo = await restClient.GetUsersInfoFromRoomAsync(tokens[1], getUsersInfoFromRoomDto);
 
-            // Count the number of admins
-            // Also get a Regular user
-            int numberOfAdmins = 0;
-            int regularUserId = -1; // something <= 0, because an id must be >= 1
+            // Check that the user 0 is admin, but the other users aren't
             foreach (UserInfoDto info in usersInfo)
             {
-                if (info.RoleInRoom == RoleInRoom.Admin.ToString())
+                if (info.Id == usersIds[0] && info.RoleInRoom != RoleInRoom.Admin.ToString())
                 {
-                    numberOfAdmins++;
+                    throw new Exception("Error: Room admin lost privilege.");
                 }
-                else if (info.RoleInRoom == RoleInRoom.Regular.ToString())
+                else if (info.Id != usersIds[0] && info.RoleInRoom == RoleInRoom.Admin.ToString())
                 {
-                    regularUserId = info.Id;
+                    throw new Exception("Error: Room admin that should be regular.");
                 }
             }
 
