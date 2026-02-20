@@ -28,6 +28,8 @@ namespace ConsoleClient
 
             // Try to register new users until we have the amount of users we need
             await RegisterRandomUsers(authClient);
+            PrintRegisteredUsers();
+
         }
 
         private async Task<bool> TryToRegisterARandomUserAsync(AuthClient authClient, int index)
@@ -72,6 +74,18 @@ namespace ConsoleClient
                 count++;
             }
             Console.WriteLine("Finished registering users.");
+        }
+
+        private void PrintRegisteredUsers()
+        {
+            Console.WriteLine("Users registered:");
+            for (int i = 0; i < _usersQuantity; i++)
+            {
+                Console.WriteLine(i);
+                Console.WriteLine($"Email = {userRegisterDtos[i].Email}");
+                Console.WriteLine($"Username = {userRegisterDtos[i].Username}");
+                Console.WriteLine($"Password = {userRegisterDtos[i].Password}");
+            }
         }
 
         }
