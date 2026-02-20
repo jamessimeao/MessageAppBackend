@@ -20,18 +20,36 @@ namespace ConsoleClient.Clients.REST
             Console.WriteLine("Finished constructing REST client.");
         }
 
-        public async Task<int> CreateRoomAndAddUserToItAsync(TokenDto token, string name)
+        private async Task<HttpResponseMessage> RequestWithJsonAsync(
+            TokenDto token,
+            HttpMethod method,
+            Service service,
+            Controller controller,
+            string action,
+            object dto)
         {
-            Console.WriteLine("Trying to create a new room...");
             HttpClient httpClient = new HttpClient();
 
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.AccessToken);
 
-            string serializedJson = JsonSerializer.Serialize(new { Name = name });
+            string serializedJson = JsonSerializer.Serialize(dto);
             Console.WriteLine($"json to post {serializedJson}");
             using StringContent jsonContent = new StringContent(serializedJson, Encoding.UTF8, "application/json");
 
             string url = _url.FromControllerAction(
+                service,
+                controller,
+                action);
+
+            HttpRequestMessage request = new();
+            request.Method = method;
+            request.Content = jsonContent;
+            request.RequestUri = new Uri(url);
+
+            HttpResponseMessage responseMessage = await httpClient.SendAsync(request);
+            return responseMessage;
+        }
+
                 Service.REST,
                 Controller.Rooms,
                 RoomsAction.CreateRoomAndAddUserToIt.ToString());
@@ -59,8 +77,9 @@ namespace ConsoleClient.Clients.REST
             string url = _url.FromControllerAction(
                 Service.REST,
                 Controller.Rooms,
-                RoomsAction.UpdateRoomName.ToString());
-            HttpResponseMessage responseMessage = await httpClient.PutAsync(url, jsonContent);
+                RoomsAction.UpdateRoomName.ToString(),
+                updateRoomNameDto);
+
             if (responseMessage.IsSuccessStatusCode)
             {
                 Console.WriteLine("Room renamed successfully.");
