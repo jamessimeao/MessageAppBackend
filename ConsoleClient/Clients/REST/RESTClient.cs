@@ -142,5 +142,26 @@ namespace ConsoleClient.Clients.REST
             }
         }
 
+        public async Task JoinRoomAsync(TokenDto token, JoinRoomDto joinRoomDto)
+        {
+            Console.WriteLine("Trying to join room...");
+
+            HttpResponseMessage responseMessage = await RequestWithJsonAsync(
+                token,
+                HttpMethod.Post,
+                Service.REST,
+                Controller.Rooms,
+                RoomsAction.JoinRoom.ToString(),
+                joinRoomDto);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return;
+            }
+            else
+            {
+                throw new Exception($"Error: Failed to join room. Status code: {responseMessage.StatusCode}.");
+            }
+        }
     }
 }
