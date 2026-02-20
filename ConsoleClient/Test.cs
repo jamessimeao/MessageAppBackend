@@ -98,7 +98,12 @@ namespace ConsoleClient
                 throw new Exception("Room should have exactly 1 admin");
             }
 
-            
+            // If we got a Regular user, its id must be >= 1
+            if(regularUserId <= 0)
+            {
+                throw new Exception("Room doesn't have a regular user.");
+            }
+
 
             // Delete the room
             DeleteRoomDto deleteRoomDto = new()
