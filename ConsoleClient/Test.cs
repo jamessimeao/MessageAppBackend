@@ -206,8 +206,36 @@ namespace ConsoleClient
                 throw new Exception("Error: Admin was removed from room.");
             }
 
-            // Also check that a regular user can't remove an admin
+            // Also check that a regular user can't remove an admin.
+            // It shouldn't be possible.
+            removeUserFromRoomDto.UserId = usersIds[1]; // an admin
+            // We need finer control, so use the RequestWithJsonAsync method
+            responseMessage = await restClient.RequestWithJsonAsync(
+                tokens[3], // token of a regular user
+                HttpMethod.Delete,
+                Service.REST,
+                Controller.Rooms,
+                RoomsAction.RemoveUserFromRoom.ToString(),
+                removeUserFromRoomDto);
+            if (responseMessage.StatusCode != System.Net.HttpStatusCode.Forbidden)
+            {
+                throw new Exception("Error: When trying to remove an admin, a Forbidden response should be received.");
+            }
 
+            // Check if the admin is still in the room
+            containsTheAdmin = false;
+            foreach (UserInfoDto info in usersInfo)
+            {
+                if (info.Id == usersIds[1])
+                {
+                    containsTheAdmin = true;
+                }
+            }
+
+            if (!containsTheAdmin)
+            {
+                throw new Exception("Error: Admin was removed from room.");
+            }
 
             // Delete the room
             DeleteRoomDto deleteRoomDto = new()
