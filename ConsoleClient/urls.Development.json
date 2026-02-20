@@ -1,8 +1,8 @@
 ﻿{
-    "TestAuthConnectionUrl": "https://localhost:7264/Auth/TestConnection",
-    "RegisterUrl": "https://localhost:7264/Auth/Register",
-    "LoginUrl": "https://localhost:7264/Auth/Login",
-    "DeleteUrl": "https://localhost:7264/Auth/Delete",
-    "ChatHubUrl": "https://localhost:7145/MessageRealTime/",
-    "CreateRoomUrl": "https://localhost:7294/Rooms/CreateRoomAndAddUserToIt"
+    "BaseUrl": "https://localhost",
+    "Ports": {
+        "Auth": 7264,
+        "MessageRealTime": 7145,
+        "REST": 7294
+    }
 }
