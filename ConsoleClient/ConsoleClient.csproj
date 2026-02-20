@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Auth\Auth.csproj" />
+    <ProjectReference Include="..\REST\REST.csproj" />
   </ItemGroup>
 
 </Project>

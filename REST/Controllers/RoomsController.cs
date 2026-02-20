@@ -227,7 +227,7 @@ namespace REST.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<RoomInfoDto>> GetRoomInfoAsync(int roomId)
+        public async Task<ActionResult<RoomInfoDto>> GetRoomInfoAsync(GetRoomInfoDto getRoomInfoDto)
         {
             int? userId = Identification.GetUserId(User);
             if(userId == null)
@@ -235,18 +235,18 @@ namespace REST.Controllers
                 return Unauthorized();
             }
 
-            bool userIsInRoom = await dataAccess.UserIsInRoomAsync(roomId, userId.Value);
+            bool userIsInRoom = await dataAccess.UserIsInRoomAsync(getRoomInfoDto.RoomId, userId.Value);
             if(!userIsInRoom)
             {
                 return Forbid();
             }
 
-            RoomInfoDto roomInfo = await dataAccess.GetRoomInfoAsync(roomId);
+            RoomInfoDto roomInfo = await dataAccess.GetRoomInfoAsync(getRoomInfoDto.RoomId);
             return Ok(roomInfo);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserInfoDto>>> GetUsersInfoFromRoomAsync(int roomId)
+        public async Task<ActionResult<IEnumerable<UserInfoDto>>> GetUsersInfoFromRoomAsync(GetUsersInfoFromRoomDto getUsersInfoFromRoomDto)
         {
             int? userId = Identification.GetUserId(User);
             if (userId == null)
@@ -254,13 +254,13 @@ namespace REST.Controllers
                 return Unauthorized();
             }
 
-            bool userIsInRoom = await dataAccess.UserIsInRoomAsync(roomId, userId.Value);
+            bool userIsInRoom = await dataAccess.UserIsInRoomAsync(getUsersInfoFromRoomDto.RoomId, userId.Value);
             if (!userIsInRoom)
             {
                 return Forbid();
             }
 
-            IEnumerable<UserInfoDto> usersInfo = await dataAccess.GetUsersInfoFromRoomAsync(roomId);
+            IEnumerable<UserInfoDto> usersInfo = await dataAccess.GetUsersInfoFromRoomAsync(getUsersInfoFromRoomDto.RoomId);
             return Ok(usersInfo);
         }
     }
