@@ -67,6 +67,32 @@ namespace ConsoleClient
                 await restClient.JoinRoomAsync(tokens[i], joinRoomDto);
             }
 
+            // Get users info from room, to verify their roles
+            // Use the user 1, because it should not need to be an admin
+            GetUsersInfoFromRoomDto getUsersInfoFromRoomDto = new()
+            {
+                RoomId = roomId
+            };
+            IEnumerable<UserInfoDto> usersInfo = await restClient.GetUsersInfoFromRoomAsync(tokens[0], getUsersInfoFromRoomDto);
+
+            // Count the number of admins
+            int numberOfAdmins = 0;
+            foreach (UserInfoDto info in  usersInfo)
+            {
+                if(info.RoleInRoom == RoleInRoom.Admin.ToString())
+                {
+                    numberOfAdmins++;
+                }
+            }
+
+            // Check that there is only one admin
+            if (numberOfAdmins != 1)
+            {
+                throw new Exception("Room with more than 1 admin.");
+            }
+
+            
+
             // Delete the room
             DeleteRoomDto deleteRoomDto = new()
             {
