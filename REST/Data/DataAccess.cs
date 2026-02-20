@@ -111,7 +111,7 @@ namespace REST.Data
             DynamicParameters parameters = new();
             parameters.Add(MESSAGEID_VARIABLE, messageId);
 
-            int ownerId = await connection.QuerySingleAsync
+            int ownerId = await connection.QuerySingleAsync<int>
             (
                 GET_MESSAGE_OWNER_PROCEDURE,
                 parameters,
@@ -156,7 +156,7 @@ namespace REST.Data
             DynamicParameters parameters = new();
             parameters.Add(ROOMID_VARIABLE, roomId);
 
-            bool hasAdmin = await connection.QuerySingleAsync
+            bool hasAdmin = await connection.QuerySingleAsync<bool>
                             (
                                 ROOM_HAS_USER_WITH_ROLE_PROCEDURE,
                                 parameters,
