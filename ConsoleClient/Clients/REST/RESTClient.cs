@@ -208,7 +208,7 @@ namespace ConsoleClient.Clients.REST
             }
         }
 
-        public async Task GetRoomInfoAsync(TokenDto token, GetRoomInfoDto getRoomInfoDto)
+        public async Task<RoomInfoDto> GetRoomInfoAsync(TokenDto token, GetRoomInfoDto getRoomInfoDto)
         {
             Console.WriteLine("Trying to get room info...");
 
@@ -222,7 +222,10 @@ namespace ConsoleClient.Clients.REST
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                return;
+                string content = await responseMessage.Content.ReadAsStringAsync();
+                RoomInfoDto roomInfo = JsonSerializer.Deserialize<RoomInfoDto>(content)
+                                        ?? throw new Exception("Error: Failed to deserialize content to RoomInfoDto.");
+                return roomInfo;
             }
             else
             {
@@ -230,7 +233,7 @@ namespace ConsoleClient.Clients.REST
             }
         }
 
-        public async Task GetUsersInfoFromRoomAsync(
+        public async Task<IEnumerable<UserInfoDto>> GetUsersInfoFromRoomAsync(
             TokenDto token,
             GetUsersInfoFromRoomDto getUsersInfoFromRoomDto)
         {
@@ -246,7 +249,10 @@ namespace ConsoleClient.Clients.REST
 
             if (responseMessage.IsSuccessStatusCode)
             {
-                return;
+                string content = await responseMessage.Content.ReadAsStringAsync();
+                IEnumerable<UserInfoDto> usersInfo = JsonSerializer.Deserialize<IEnumerable<UserInfoDto>>(content)
+                    ?? throw new Exception("Error: Failed to deserialize content to IEnumerable<UserInfoDto>.");
+                return usersInfo;
             }
             else
             {
