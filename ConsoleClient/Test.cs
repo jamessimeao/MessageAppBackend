@@ -49,7 +49,13 @@ namespace ConsoleClient
             };
             int roomId = await restClient.CreateRoomAndAddUserToItAsync(tokens[0], createRoomDto);
 
-            // Invite the other users to the room
+            // Get a room invitation
+            GenerateInvitationTokenDto generateInvitationTokenDto = new()
+            {
+                RoomId = roomId
+            };
+            string invitationToken = await restClient.GenerateInvitationTokenAsync(tokens[0], generateInvitationTokenDto);
+            Console.WriteLine($"Invitation token = {invitationToken}");
 
             // Delete the room
             DeleteRoomDto deleteRoomDto = new()
