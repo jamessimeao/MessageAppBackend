@@ -73,6 +73,30 @@ namespace ConsoleClient.Clients.REST
             throw new Exception($"Error: Failed to create room:\n{content}");
         }
 
+        public async Task DeleteRoomAsync(TokenDto token, DeleteRoomDto deleteRoomDto)
+        {
+            Console.WriteLine("Trying to delete room...");
+
+            HttpResponseMessage responseMessage = await RequestWithJsonAsync(
+                token,
+                HttpMethod.Delete,
+                Service.REST,
+                Controller.Rooms,
+                RoomsAction.DeleteRoom.ToString(),
+                deleteRoomDto);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Room deleted successfully.");
+                return;
+            }
+            else
+            {
+                string content = await responseMessage.Content.ReadAsStringAsync();
+                throw new Exception($"Error: Failed to delete room:\n{content}");
+            }
+        }
+
         public async Task UpdateRoomNameAsync(TokenDto token, UpdateRoomNameDto updateRoomNameDto)
         {
             Console.WriteLine("Trying to rename room...");
