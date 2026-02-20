@@ -8,6 +8,7 @@ namespace ConsoleClient.Clients.Auth
         public readonly string testAuthConnectionUrl;
         public readonly string registerUrl;
         public readonly string loginUrl;
+        public readonly string deleteUrl;
 
         public AuthUrls(bool productionUrls)
         {
@@ -31,6 +32,8 @@ namespace ConsoleClient.Clients.Auth
                                         ?? throw new Exception("Failed to get RegisterUrl");
             loginUrl = configuration.GetValue<string>("LoginUrl")
                                         ?? throw new Exception("Failed to get LoginUrl");
+            deleteUrl = configuration.GetValue<string>("DeleteUrl")
+                            ?? throw new Exception("Failed to get DeleteUrl");
 
             Console.WriteLine("Got the auth urls from configuration successfully.");
         }
