@@ -15,6 +15,7 @@ namespace ConsoleClient
         private readonly Url url;
         private UserRegisterDto[] userRegisterDtos;
         private TokenDto[] tokens;
+        private int[] usersIds;
         private Random random = new Random();
         private const string ALPHNUM = "ABCEDFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private const string SYMB = @"&%-/\*#$";
@@ -29,6 +30,7 @@ namespace ConsoleClient
             _usersQuantity = usersQuantity;
             userRegisterDtos = new UserRegisterDto[usersQuantity];
             tokens = new TokenDto[usersQuantity];
+            usersIds = new int[usersQuantity];
         }
 
         public async Task ExecuteAsync()
@@ -44,6 +46,8 @@ namespace ConsoleClient
 
             // Login each user
             await LoginUsers(authClient);
+
+            GetUsersIdsFromTokens();
 
             // Create a room for the first user
             CreateRoomDto createRoomDto = new()
@@ -245,6 +249,14 @@ namespace ConsoleClient
             int id = Int32.Parse(idString);
 
             return id;
+        }
+
+        private void GetUsersIdsFromTokens()
+        {
+            for (int i = 0; i < _usersQuantity; i++)
+            {
+                usersIds[i] = GetIdFromJWT(tokens[i].AccessToken);
+            }
         }
 
         private async Task DeleteUsers(AuthClient authClient)
