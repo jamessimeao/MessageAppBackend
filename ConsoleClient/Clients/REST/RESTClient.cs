@@ -163,5 +163,28 @@ namespace ConsoleClient.Clients.REST
                 throw new Exception($"Error: Failed to join room. Status code: {responseMessage.StatusCode}.");
             }
         }
+
+        public async Task RemoveUserFromRoomAsync(TokenDto token, RemoveUserFromRoomDto removeUserFromRoomDto)
+        {
+            Console.WriteLine("Trying to remove user from room...");
+
+            HttpResponseMessage responseMessage = await RequestWithJsonAsync(
+                token,
+                HttpMethod.Delete,
+                Service.REST,
+                Controller.Rooms,
+                RoomsAction.RemoveUserFromRoom.ToString(),
+                removeUserFromRoomDto);
+
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                return;
+            }
+            else
+            {
+                throw new Exception($"Error: Failed to remove user from room. Status code: {responseMessage.StatusCode}.");
+            }
+        }
+
     }
 }
