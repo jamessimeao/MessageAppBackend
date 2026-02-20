@@ -104,6 +104,15 @@ namespace ConsoleClient
                 throw new Exception("Room doesn't have a regular user.");
             }
 
+            // Turn the regular user into an admin
+            UpdateUserRoleInRoomDto updateUserRoleInRoomDto = new()
+            { 
+                RoleInRoom = RoleInRoom.Admin,
+                UserId = regularUserId,
+                RoomId = roomId,
+            };
+            await restClient.UpdateUserRoleInRoomAsync(tokens[0], updateUserRoleInRoomDto);
+
 
             // Delete the room
             DeleteRoomDto deleteRoomDto = new()
