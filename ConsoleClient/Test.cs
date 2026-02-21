@@ -78,7 +78,7 @@ namespace ConsoleClient
             // It shouldn't be possible.
             await TestRegularUserTryingToRenameARoomAsync(roomId, tokens[1]);
             // Turn the user 1 into an admin
-            await TestPromotingRegularUserToAdminAsync(roomId, usersIds[1]);
+            await TestPromotingRegularUserToAdminAsync(roomId, usersIds[1], tokens[0]);
             // Try again to rename the room, now with admin privilege
             await TestAdminRenamingARoomAsync(roomId, tokens[1]);
             // Remove the user 3, which should be a regular user
@@ -293,7 +293,7 @@ namespace ConsoleClient
             }
         }
 
-        public async Task TestPromotingRegularUserToAdminAsync(int roomId, int regularUserId)
+        public async Task TestPromotingRegularUserToAdminAsync(int roomId, int regularUserId, TokenDto adminToken)
         {
             UpdateUserRoleInRoomDto updateUserRoleInRoomDto = new()
             {
@@ -301,14 +301,14 @@ namespace ConsoleClient
                 UserId = regularUserId,
                 RoomId = roomId,
             };
-            await restClient.UpdateUserRoleInRoomAsync(tokens[0], updateUserRoleInRoomDto);
+            await restClient.UpdateUserRoleInRoomAsync(adminToken, updateUserRoleInRoomDto);
 
             // Get users info from room, to verify their roles
             GetUsersInfoFromRoomDto getUsersInfoFromRoomDto = new()
             {
                 RoomId = roomId,
             };
-            IEnumerable <UserInfoDto> usersInfo = await restClient.GetUsersInfoFromRoomAsync(tokens[0], getUsersInfoFromRoomDto);
+            IEnumerable <UserInfoDto> usersInfo = await restClient.GetUsersInfoFromRoomAsync(adminToken, getUsersInfoFromRoomDto);
 
             // Check that user 1 is admin
             foreach (UserInfoDto info in usersInfo)
