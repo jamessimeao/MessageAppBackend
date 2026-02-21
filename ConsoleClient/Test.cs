@@ -53,11 +53,11 @@ namespace ConsoleClient
         public async Task ExecuteAsync()
         {
             // Try to register new users until we have the amount of users we need
-            await RegisterRandomUsers(authClient);
+            await RegisterRandomUsersAsync(authClient);
             PrintRegisteredUsers();
 
             // Login each user
-            await LoginUsers(authClient);
+            await LoginUsersAsync(authClient);
 
             GetUsersIdsFromTokens();
 
@@ -249,7 +249,7 @@ namespace ConsoleClient
 
             // Do some chatting
             int numberOfUsersInRoom = usersInfo.Count();
-            await Chat(roomId, numberOfUsersInRoom);
+            await ChatAsync(roomId, numberOfUsersInRoom);
 
             // Test editing, deleting and loading messages
 
@@ -283,7 +283,7 @@ namespace ConsoleClient
             return succeded;
         }
 
-        private async Task RegisterRandomUsers(AuthClient authClient)
+        private async Task RegisterRandomUsersAsync(AuthClient authClient)
         {
             // Keep trying to register new users
             Console.WriteLine("\nTrying to register new users...");
@@ -316,7 +316,7 @@ namespace ConsoleClient
             }
         }
 
-        private async Task LoginUsers(AuthClient authClient)
+        private async Task LoginUsersAsync(AuthClient authClient)
         {
             Console.WriteLine("\nLogin users...");
             for (int i = 0; i < _usersQuantity; i++)
@@ -366,7 +366,7 @@ namespace ConsoleClient
             }
         }
 
-        private async Task DeleteUsers(AuthClient authClient)
+        private async Task DeleteUsersAsync(AuthClient authClient)
         {
             Console.WriteLine("\nDeleting users...");
             for (int i = 0; i < _usersQuantity; i++)
@@ -381,7 +381,7 @@ namespace ConsoleClient
             Console.WriteLine("Finished deleting users.");
         }
 
-        private async Task Chat(int roomId, int numberOfUsersInRoom)
+        private async Task ChatAsync(int roomId, int numberOfUsersInRoom)
         {
             MessageRealTimeClient[] mrtClients = new MessageRealTimeClient[numberOfUsersInRoom];
 
@@ -422,7 +422,7 @@ namespace ConsoleClient
             await restClient.DeleteRoomAsync(tokens[0], deleteRoomDto);
 
             // Delete users
-            await DeleteUsers(authClient);
+            await DeleteUsersAsync(authClient);
         }
     }
 }
