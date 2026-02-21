@@ -386,13 +386,13 @@ namespace ConsoleClient
             MessageRealTimeClient[] mrtClients = new MessageRealTimeClient[numberOfUsersInRoom];
 
             // Connect each user in the room to SignalR, so they can chat
-            Task[] connectTasks = new Task[numberOfUsersInRoom];
+            Task[] signalrTasks = new Task[numberOfUsersInRoom];
             for(int i = 0; i < numberOfUsersInRoom; i++)
             {
                 mrtClients[i] = new MessageRealTimeClient(url, tokens[i]);
-                connectTasks[i] = mrtClients[i].TryToConnectToChatHubAsync();
+                signalrTasks[i] = mrtClients[i].TryToConnectToChatHubAsync();
             }
-            Task.WaitAll(connectTasks);
+            Task.WaitAll(signalrTasks);
 
             Console.WriteLine("Chatting...");
             // Generate messages randomly
