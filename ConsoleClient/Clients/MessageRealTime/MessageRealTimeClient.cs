@@ -41,7 +41,7 @@ namespace ConsoleClient.Clients.MessageRealTime
             Console.WriteLine("Finished constructing MessageRealTime client.");
         }
 
-        public void ConfigureConnectionActions()
+        private void ConfigureConnectionActions()
         {
             // What to do if disconnected
             connection.Closed += OnConnectionClosedAsync;
