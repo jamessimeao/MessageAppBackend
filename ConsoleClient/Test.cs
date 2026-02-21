@@ -18,12 +18,15 @@ namespace ConsoleClient
         private readonly Url url;
 
         // Auth
+        AuthClient authClient; // Only need a single Auth client to get tokens
         private UserRegisterDto[] userRegisterDtos;
         private TokenDto[] tokens;
         private int[] usersIds;
         private const string ALPHNUM = "ABCEDFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         private const string SYMB = @"&%-/\*#$";
 
+        // REST
+        RESTClient restClient; // Only need a single REST client
         // Rooms
         private const string originalRoomName = "original name";
         private const string newRoomName = "new name";
@@ -32,21 +35,19 @@ namespace ConsoleClient
 
         public Test(bool productionUrls, int usersQuantity)
         {
-            url = new Url(productionUrls);
-
             _usersQuantity = usersQuantity;
             userRegisterDtos = new UserRegisterDto[usersQuantity];
             tokens = new TokenDto[usersQuantity];
             usersIds = new int[usersQuantity];
+
+            url = new Url(productionUrls);
+            
+            authClient = new AuthClient(url);
+            restClient = new RESTClient(url);
         }
 
         public async Task ExecuteAsync()
         {
-            // Only need a single Auth client to get tokens
-            AuthClient authClient = new AuthClient(url);
-            // And only need a single REST client
-            RESTClient restClient = new RESTClient(url);
-
             // Try to register new users until we have the amount of users we need
             await RegisterRandomUsers(authClient);
             PrintRegisteredUsers();
