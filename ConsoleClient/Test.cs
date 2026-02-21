@@ -243,15 +243,9 @@ namespace ConsoleClient
                 throw new Exception("Error: Admin was removed from room.");
             }
 
-            // Delete the room
-            DeleteRoomDto deleteRoomDto = new()
-            {
-                RoomId = roomId
-            };
-            await restClient.DeleteRoomAsync(tokens[0], deleteRoomDto);
 
-            // Delete users
-            await DeleteUsers(authClient);
+
+            await CleanupAsync(roomId);
 
             Console.WriteLine("Test succeeded.");
         }
@@ -376,6 +370,19 @@ namespace ConsoleClient
                 }
             }
             Console.WriteLine("Finished deleting users.");
+        }
+
+        private async Task CleanupAsync(int roomId)
+        {
+            // Delete the room
+            DeleteRoomDto deleteRoomDto = new()
+            {
+                RoomId = roomId
+            };
+            await restClient.DeleteRoomAsync(tokens[0], deleteRoomDto);
+
+            // Delete users
+            await DeleteUsers(authClient);
         }
     }
 }
