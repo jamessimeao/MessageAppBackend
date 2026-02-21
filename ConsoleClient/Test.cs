@@ -1,4 +1,5 @@
 ﻿using ConsoleClient.Clients.Auth;
+using ConsoleClient.Clients.MessageRealTime;
 using ConsoleClient.Clients.REST;
 using ConsoleClient.Clients.Urls;
 using ConsoleClient.Enums;
@@ -30,6 +31,9 @@ namespace ConsoleClient
         // Rooms
         private const string originalRoomName = "original name";
         private const string newRoomName = "new name";
+
+        // MessageRealTime
+        private const uint numberOfMessagesToGenerate = 50;
 
         private const int DELAY_MILLISECS = 500;
 
@@ -243,6 +247,11 @@ namespace ConsoleClient
                 throw new Exception("Error: Admin was removed from room.");
             }
 
+            // Do some chatting
+            int numberOfUsersInRoom = usersInfo.Count();
+            await Chat(roomId, numberOfUsersInRoom);
+
+            // Test editing, deleting and loading messages
 
 
             await CleanupAsync(roomId);
@@ -370,6 +379,30 @@ namespace ConsoleClient
                 }
             }
             Console.WriteLine("Finished deleting users.");
+        }
+
+        private async Task Chat(int roomId, int numberOfUsersInRoom)
+        {
+            MessageRealTimeClient[] mrtClients = new MessageRealTimeClient[numberOfUsersInRoom];
+
+            // Connect each user in the room to SignalR, so they can chat
+            Task[] connectTasks = new Task[numberOfUsersInRoom];
+            for(int i = 0; i < numberOfUsersInRoom; i++)
+            {
+                mrtClients[i] = new MessageRealTimeClient(url, tokens[i]);
+                connectTasks[i] = mrtClients[i].TryToConnectToChatHubAsync();
+            }
+            Task.WaitAll(connectTasks);
+
+            Console.WriteLine("Chatting...");
+            // Generate messages randomly
+            for (int i = 0; i < numberOfMessagesToGenerate; i++)
+            {
+                int randomIndex = random.Next(numberOfUsersInRoom);
+                string randomContent = random.GetString(ALPHNUM, 100);
+                await mrtClients[randomIndex].SendMessageAsync(roomId, randomContent);
+            }
+            Console.WriteLine("Finished chatting.");
         }
 
         private async Task CleanupAsync(int roomId)
