@@ -81,7 +81,7 @@ namespace ConsoleClient
             await TestPromotingRegularUserToAdminAsync(roomId, usersIds[1], tokens[0]);
             // Try again to rename the room, now with admin privilege
             await TestAdminRenamingARoomAsync(roomId, tokens[1]);
-            // Remove the user 3, which should be a regular user
+            // Remove the last user, which should be a regular user
             await TestAdminRemovingARegularUserAsync(roomId, tokens[0], usersIds[_usersQuantity-1]);
             // Also make an admin try to remove an admin, it shouldn't be possible.
             await TestAdminRemovingAdminAsync(roomId, tokens[0], usersIds[1]);
