@@ -69,7 +69,7 @@ namespace ConsoleClient
 
             for (int i = 1; i < _usersQuantity; i++)
             {
-                await AddUserToRoomAsync(roomId, tokens[i]);
+                await AddUserToRoomAsync(roomId, tokens[0], tokens[i]);
             }
 
             await CheckThatTheRoomCreatorIsTheOnlyAdminAsync(roomId, usersIds[0]);
@@ -232,14 +232,14 @@ namespace ConsoleClient
             Console.WriteLine("Finished deleting users.");
         }
 
-        public async Task AddUserToRoomAsync(int roomId, TokenDto userToJoinToken)
+        public async Task AddUserToRoomAsync(int roomId, TokenDto roomCreatorToken, TokenDto userToJoinToken)
         {
             // Get a room invitation
             GenerateInvitationTokenDto generateInvitationTokenDto = new()
             {
                 RoomId = roomId
             };
-            string invitationToken = await restClient.GenerateInvitationTokenAsync(tokens[0], generateInvitationTokenDto);
+            string invitationToken = await restClient.GenerateInvitationTokenAsync(roomCreatorToken, generateInvitationTokenDto);
             Console.WriteLine($"Invitation token = {invitationToken}");
 
             // Join the room
