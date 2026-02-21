@@ -39,6 +39,10 @@ namespace ConsoleClient
 
         public Test(bool productionUrls, int usersQuantity)
         {
+            if(usersQuantity < 4)
+            {
+                throw new Exception($"Test needs at least 4 users: usersQuantity = {usersQuantity}.");
+            }
             _usersQuantity = usersQuantity;
             userRegisterDtos = new UserRegisterDto[usersQuantity];
             tokens = new TokenDto[usersQuantity];
